@@ -34,7 +34,7 @@ We use Feature-Sliced Design architecture. Respect these boundaries:
     - **Files:** kebab-case for non-component files (e.g., `api-utils.ts`).
     - **Constants:** SCREAMING_SNAKE_CASE (e.g., `MAX_RETRIES`).
 
-## Code Formatting (Prettier)
+### Code Formatting (Prettier)
 
 You must follow the formatting rules defined in our project configuration. Do not default to standard generic formatting.
 
@@ -87,6 +87,35 @@ When writing code blocks, ensure they are pre-formatted according to these rules
 - `pnpm test`: Vitest unit tests with React Testing Library
 - Tests live under `src/**/__tests__`
 - Use `data-testid` for stable UI queries
+
+## Conventional Commits
+
+Use Conventional Commit messages for all changes. Format:
+
+```
+<type>(<scope>): <summary>
+```
+
+Common types:
+- `feat`: new functionality
+- `fix`: bug fix
+- `docs`: documentation only
+- `test`: add or update tests
+- `refactor`: code changes without behavior change
+- `style`: formatting or style-only changes
+- `build`: build tooling or config changes
+- `chore`: maintenance tasks
+
+Examples:
+- `feat: add settings dropdown for versions`
+- `fix: handle empty registry response`
+- `docs: add contribution guide`
+- `build: migrate build pipeline to Vite`
+- `chore(release): bump version to v0.1.0`
+
+Commit message rules:
+- Use a 50-character subject line, a blank line, and a body wrapped at 72 characters.
+- Use only lowercase. kebab-case and snake_case are allowed; avoid camelCase or PascalCase.
 
 ## 4. TypeScript Standards
 
