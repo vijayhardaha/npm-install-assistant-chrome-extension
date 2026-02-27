@@ -97,6 +97,7 @@ Use Conventional Commit messages for all changes. Format:
 ```
 
 Common types:
+
 - `feat`: new functionality
 - `fix`: bug fix
 - `docs`: documentation only
@@ -107,6 +108,7 @@ Common types:
 - `chore`: maintenance tasks
 
 Examples:
+
 - `feat: add settings dropdown for versions`
 - `fix: handle empty registry response`
 - `docs: add contribution guide`
@@ -114,6 +116,7 @@ Examples:
 - `chore(release): bump version to v0.1.0`
 
 Commit message rules:
+
 - Use a 50-character subject line, a blank line, and a body wrapped at 72 characters.
 - Use only lowercase. kebab-case and snake_case are allowed; avoid camelCase or PascalCase.
 
