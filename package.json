@@ -1,6 +1,6 @@
 {
 	"name": "npm-install-assistant-chrome-extension",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"private": true,
 	"description": "Chrome extension that adds a React-powered install assistant block to npm package sidebars.",
 	"scripts": {
