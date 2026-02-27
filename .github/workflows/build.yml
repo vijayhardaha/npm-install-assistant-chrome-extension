@@ -1,89 +1,91 @@
 name: Build Extension
 
 on:
-    push:
-        branches:
-            - "master"
-        tags:
-            - "v*"
-    pull_request:
-        branches:
-            - "**"
-    workflow_dispatch:
+  push:
+    branches:
+      - "master"
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - "master"
+  workflow_dispatch:
 
 permissions:
-    contents: write
+  contents: write
 
 jobs:
-    lint:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-                uses: actions/checkout@v4
+  lint:
+    runs-on: ubuntu-latest
 
-            - name: Set up Node
-                uses: actions/setup-node@v4
-                with:
-                    node-version: "22"
-                    cache: "pnpm"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Set up pnpm
-                uses: pnpm/action-setup@v4
-                with:
-                    version: "10"
-                    run_install: false
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
 
-            - name: Install dependencies
-                run: pnpm install --frozen-lockfile
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10"
+          run_install: false
 
-            - name: Lint scripts
-                run: pnpm run lint
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-            - name: Lint styles
-                run: pnpm run stylelint
+      - name: Lint scripts
+        run: pnpm run lint
 
-            - name: Format check
-                run: pnpm run format:check
+      - name: Lint styles
+        run: pnpm run stylelint
 
-    build:
-        needs: lint
+      - name: Format check
+        run: pnpm run format:check
+
+  build:
+    needs: lint
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10"
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build extension
+        run: pnpm run build
+
+      - name: Zip dist contents
+        run: |
+          cd dist
+          zip -r ../npm-install-assistant.zip .
+
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-install-assistant
+          path: npm-install-assistant.zip
+
+      - name: Create GitHub release
         if: startsWith(github.ref, 'refs/tags/v')
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-                uses: actions/checkout@v4
-
-            - name: Set up Node
-                uses: actions/setup-node@v4
-                with:
-                    node-version: "22"
-                    cache: "pnpm"
-
-            - name: Set up pnpm
-                uses: pnpm/action-setup@v4
-                with:
-                    version: "10"
-                    run_install: false
-
-            - name: Install dependencies
-                run: pnpm install --frozen-lockfile
-
-            - name: Build extension
-                run: pnpm run build
-
-            - name: Zip dist contents
-                run: |
-                    cd dist
-                    zip -r ../npm-install-assistant.zip .
-
-            - name: Upload zip artifact
-                uses: actions/upload-artifact@v4
-                with:
-                    name: npm-install-assistant
-                    path: npm-install-assistant.zip
-
-            - name: Create GitHub release
-                if: startsWith(github.ref, 'refs/tags/v')
-                uses: softprops/action-gh-release@v2
-                with:
-                    files: npm-install-assistant.zip
+        uses: softprops/action-gh-release@v2
+        with:
+          files: npm-install-assistant.zip
