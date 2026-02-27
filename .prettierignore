@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+assets/
+.github/*.yml
+.husky/_
+.husky/*.log
+*.log
