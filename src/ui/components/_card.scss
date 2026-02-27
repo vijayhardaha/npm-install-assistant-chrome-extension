@@ -1,0 +1,138 @@
+@use "../variables";
+@use "../mixins";
+
+.nia {
+	&-card {
+		position: relative;
+		margin-top: 1rem;
+		padding: 1rem;
+		overflow: hidden;
+		border: 1px solid variables.$color-border;
+		color: variables.$color-text;
+
+		@include mixins.border-radius;
+	}
+
+	&-header {
+		display: flex;
+		flex-direction: column;
+		align-items: start;
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+
+	&-header-content {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
+		margin-bottom: 0.2em;
+	}
+
+	&-settings-container {
+		position: relative;
+		flex-shrink: 0;
+		margin-left: auto;
+	}
+
+	&-settings-button {
+		display: inline-flex;
+		position: relative;
+		align-items: center;
+		justify-content: center;
+		width: 1.875rem;
+		height: 1.875rem;
+		margin: 0;
+		padding: 0.125em;
+		border: 1px solid variables.$color-border;
+		outline: none;
+		background: rgba(variables.$color-bg, 0.02);
+		color: variables.$color-text;
+		font-size: variables.$font-size-sm;
+		font-weight: 400;
+		cursor: pointer;
+
+		@include mixins.border-radius;
+	}
+
+	&-settings-dropdown {
+		display: flex;
+		position: absolute;
+		z-index: 1000;
+		top: 110%;
+		right: 0;
+		flex-direction: column;
+		align-items: start;
+		width: max-content;
+		min-width: 200px;
+		padding: 1rem;
+		border: 1px solid variables.$color-border;
+		background: #fff;
+		color: variables.$color-text;
+		font-size: variables.$font-size-base;
+		gap: 0.675rem;
+
+		@include mixins.border-radius;
+
+		label {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			gap: 2em;
+		}
+
+		.nia-label {
+			color: variables.$color-bg;
+			font-size: variables.$font-size-sm;
+		}
+
+		input[type="checkbox"] {
+			display: inline-block;
+			position: relative;
+			top: -1px;
+			accent-color: variables.$color-bg;
+
+			&:disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
+			}
+		}
+
+		input[type="number"] {
+			width: 3rem;
+		}
+	}
+
+	&-settings-overlay{
+		display: flex;
+		position: absolute;
+		z-index: 999;
+		top: 0;
+		left: 0;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(#fff, 0.15);
+		backdrop-filter: blur(1px);
+	}
+
+	&-title {
+		margin-top: 0 !important;
+		margin-right: 1rem;
+		margin-bottom: 0 !important;
+		font-size: variables.$font-size-title;
+		font-weight: 700;
+		letter-spacing: 0.01em;
+	}
+
+	&-subtitle {
+		margin: 0;
+		margin-top: 0.15rem;
+		color: rgba(variables.$color-muted, 0.95);
+		font-size: variables.$font-size-sub;
+		line-height: 1.4;
+	}
+}

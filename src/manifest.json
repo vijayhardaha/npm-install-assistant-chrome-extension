@@ -1,0 +1,20 @@
+{
+	"manifest_version": 3,
+	"name": "NPM Install Assistant",
+	"description": "Adds a modern install-helper block to npm package sidebars with version, package manager, and dependency-type selectors.",
+	"version": "0.0.0",
+	"icons": {
+		"16": "assets/icon16.png",
+		"32": "assets/icon32.png",
+		"48": "assets/icon48.png",
+		"128": "assets/icon128.png"
+	},
+	"content_scripts": [
+		{
+			"matches": ["https://www.npmjs.com/package/*"],
+			"js": ["js/content.iife.js"],
+			"css": ["ui/styles.css"],
+			"run_at": "document_idle"
+		}
+	]
+}

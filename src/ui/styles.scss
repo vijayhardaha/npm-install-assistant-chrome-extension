@@ -1,0 +1,31 @@
+@use "variables";
+@use "mixins";
+
+// =======================
+// Components
+// =======================
+@use "components/card";
+@use "components/controls";
+@use "components/hint";
+@use "components/command";
+@use "components/copy";
+
+#main aside[aria-label="Package sidebar"] div.lh-copy p:has(span > code) {
+	@include mixins.border-radius;
+
+	button[aria-label*="Copy"] {
+		position: absolute;
+		top: 50%;
+		right: 0;
+		left: auto;
+		transform: translateY(-50%);
+		border: none;
+		background: none;
+		cursor: pointer;
+
+		svg{
+			width: 1rem;
+			height: 1rem;
+		}
+	}
+}

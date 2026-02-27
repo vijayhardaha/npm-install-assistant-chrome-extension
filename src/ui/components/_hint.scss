@@ -1,0 +1,14 @@
+@use "../variables";
+@use "../mixins";
+
+.nia-hint {
+	margin-top: 0.15rem;
+	color: variables.$color-hint;
+	font-size: variables.$font-size-hint;
+
+	@include mixins.truncate;
+
+	&-error {
+		color: variables.$color-hint-error;
+	}
+}

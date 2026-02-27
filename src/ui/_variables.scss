@@ -1,0 +1,32 @@
+// =======================
+// Variables
+// =======================
+
+// Colors
+$color-text: #0f172a;
+$color-bg: #0f172a;
+$color-border: #ccc;
+$color-muted: #757575;
+$color-primary: #2563eb;
+$color-primary-weak: #3b82f6;
+$color-accent: #0ea5e9;
+$color-success: #05df72;
+$color-white: #e5e7eb;
+$color-button-text: #0f172a;
+$color-copy-bg: #e9e9e9;
+$color-copy-foreground: #71717b;
+$color-hint: #757575;
+$color-hint-error: #ef4444;
+
+// Radius
+$radius: 0.25rem;
+
+// Fonts
+$font-code: "Consolas, monaco, monospace";
+$font-size-base: 1rem;
+$font-size-sm: $font-size-base * 0.875;
+$font-size-xs: $font-size-base * 0.75;
+$font-size-title: $font-size-base * 1.375;
+$font-size-sub: $font-size-sm;
+$font-size-hint: $font-size-xs;
+$font-size-command: $font-size-base * 0.8;

@@ -1,0 +1,67 @@
+###############################################################################
+#  ______    _ _ _             _____             _____ _
+# |  ____|  | (_) |           / ____|           / ____(_)
+# | |__   __| |_| |_ ___  _ _| |     ___  _ __ | |     _  __ _
+# |  __| / _` | | __/ _ \| '__| |    / _ \| '_ \| |_   | |/ _` |
+# | |___| (_| | | || (_) | |  | |___| (_) | | | | |____| | (_| |
+# |______\__,_|_|\__\___/|_|   \_____\___/|_| |_|\_____|_|\__, |
+#                                                          __/ |
+#  PROJECT-WIDE CODE STYLE GUIDELINES                     |___/
+###############################################################################
+#
+# PURPOSE:
+#   This file ensures that every developer—regardless of their IDE (VS Code,
+#   IntelliJ, Vim, etc.)—follows the exact same formatting rules.
+#
+# USAGE:
+#   - Ensure your IDE has the EditorConfig plugin installed.
+#   - Rules are applied top-to-bottom; specific patterns override general ones.
+#
+###############################################################################
+
+# Stop searching for other .editorconfig files in parent directories
+root = true
+
+###############################################################################
+# GLOBAL SETTINGS (Applied to all files)
+###############################################################################
+[*]
+# Ensure cross-platform compatibility with standard UTF-8 encoding
+charset = utf-8
+
+# Use Unix-style line feeds (\n) to prevent "mismatched line ending" Git warnings
+end_of_line = lf
+
+# Project standard: Use tabs for indentation (allows user-level visual width)
+indent_style = tab
+
+# Set the visual width of a tab character to 4 spaces
+indent_size = 4
+
+# Clean up: remove invisible spaces at the end of lines on save
+trim_trailing_whitespace = true
+
+# Standards: Ensure files end with a blank line for POSIX compatibility
+insert_final_newline = true
+
+
+###############################################################################
+# OVERRIDES (Language-specific tweaks)
+###############################################################################
+
+# Documentation and Data: Use 2-space visual width for better readability
+[*.{md,yml,yaml}]
+indent_size = 2
+
+# Configuration: JSON is typically strictly 2-space indented in modern toolchains
+[*.json]
+indent_size = 2
+
+# Plain Text: Maintain literal content (whitespace may be intentional here)
+[*.txt]
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+###############################################################################
+# END OF CONFIG
+###############################################################################
