@@ -12,10 +12,7 @@ const createRegistryResponse = (): MockRegistry => ({
 });
 
 const mockFetch = () => {
-	const response = {
-		ok: true,
-		json: async () => createRegistryResponse(),
-	} as Response;
+	const response = { ok: true, json: async () => createRegistryResponse() } as Response;
 
 	vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response));
 };
@@ -39,10 +36,7 @@ describe("SidebarApp", () => {
 	});
 
 	it("disables the version dropdown while loading", () => {
-		vi.stubGlobal(
-			"fetch",
-			vi.fn().mockReturnValue(new Promise(() => {}) as Promise<Response>)
-		);
+		vi.stubGlobal("fetch", vi.fn().mockReturnValue(new Promise(() => {}) as Promise<Response>));
 
 		render(<SidebarApp packageName="react" />);
 
@@ -58,9 +52,7 @@ describe("SidebarApp", () => {
 		const dependencySelect = screen.getByTestId("dependency-select");
 		await user.selectOptions(dependencySelect, "dev");
 
-		expect(
-			screen.getByText("npm install --save-dev react")
-		).toBeInTheDocument();
+		expect(screen.getByText("npm install --save-dev react")).toBeInTheDocument();
 	});
 
 	it("toggles beta versions and limits the list", async () => {
@@ -68,9 +60,7 @@ describe("SidebarApp", () => {
 		render(<SidebarApp packageName="react" />);
 
 		await screen.findByRole("option", { name: "2.0.0" });
-		expect(
-			screen.queryByRole("option", { name: "1.1.0-beta.1" })
-		).not.toBeInTheDocument();
+		expect(screen.queryByRole("option", { name: "1.1.0-beta.1" })).not.toBeInTheDocument();
 
 		const settingsButton = screen.getByTestId("settings-button");
 		await user.click(settingsButton);
@@ -78,20 +68,14 @@ describe("SidebarApp", () => {
 		const betaCheckbox = screen.getByTestId("show-beta-checkbox");
 		await user.click(betaCheckbox);
 
-		expect(
-			await screen.findByRole("option", { name: "1.1.0-beta.1" })
-		).toBeInTheDocument();
+		expect(await screen.findByRole("option", { name: "1.1.0-beta.1" })).toBeInTheDocument();
 
 		const maxVersionsInput = screen.getByTestId("max-versions-input");
 		fireEvent.change(maxVersionsInput, { target: { value: "1" } });
 
-		expect(
-			screen.getByRole("option", { name: "2.0.0" })
-		).toBeInTheDocument();
+		expect(screen.getByRole("option", { name: "2.0.0" })).toBeInTheDocument();
 		await waitFor(() => {
-			expect(
-				screen.queryByRole("option", { name: "1.0.0" })
-			).not.toBeInTheDocument();
+			expect(screen.queryByRole("option", { name: "1.0.0" })).not.toBeInTheDocument();
 		});
 	});
 });

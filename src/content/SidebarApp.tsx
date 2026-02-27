@@ -103,15 +103,12 @@ function buildInstallCommand(params: {
  * @param {SidebarAppProps} props - Component props.
  * @returns The rendered sidebar UI.
  */
-export const SidebarApp: React.FC<SidebarAppProps> = ({
-	packageName,
-}: SidebarAppProps) => {
+export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppProps) => {
 	const [versions, setVersions] = useState<string[]>([]);
 	const [filteredVersions, setFilteredVersions] = useState<string[]>([]);
 	const [selectedVersion, setSelectedVersion] = useState<string>("latest");
 	const [pkgManager, setPkgManager] = useState<PkgManager>("npm");
-	const [dependencyType, setDependencyType] =
-		useState<DependencyType>("prod");
+	const [dependencyType, setDependencyType] = useState<DependencyType>("prod");
 	const [copied, setCopied] = useState(false);
 	const [loadingVersions, setLoadingVersions] = useState(false);
 	const [versionError, setVersionError] = useState<string | null>(null);
@@ -129,18 +126,14 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 			}
 
 			// Load persisted showBeta and maxVersions settings
-			const storedShowBeta = window.localStorage.getItem(
-				SHOW_BETA_STORAGE_KEY
-			);
+			const storedShowBeta = window.localStorage.getItem(SHOW_BETA_STORAGE_KEY);
 			if (storedShowBeta === "true") {
 				setShowBeta(true);
 			} else if (storedShowBeta === "false") {
 				setShowBeta(false);
 			}
 
-			const storedMax = window.localStorage.getItem(
-				MAX_VERSIONS_STORAGE_KEY
-			);
+			const storedMax = window.localStorage.getItem(MAX_VERSIONS_STORAGE_KEY);
 			if (storedMax) {
 				const parsed = parseInt(storedMax, 10);
 				if (!Number.isNaN(parsed) && parsed > 0) {
@@ -163,10 +156,7 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 
 	useEffect(() => {
 		try {
-			window.localStorage.setItem(
-				SHOW_BETA_STORAGE_KEY,
-				String(showBeta)
-			);
+			window.localStorage.setItem(SHOW_BETA_STORAGE_KEY, String(showBeta));
 		} catch {
 			// Ignore
 		}
@@ -174,10 +164,7 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 
 	useEffect(() => {
 		try {
-			window.localStorage.setItem(
-				MAX_VERSIONS_STORAGE_KEY,
-				String(maxVersions)
-			);
+			window.localStorage.setItem(MAX_VERSIONS_STORAGE_KEY, String(maxVersions));
 		} catch {
 			// Ignore
 		}
@@ -204,16 +191,12 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 
 			try {
 				const response = await fetch(
-					`https://registry.npmjs.org/${encodeURIComponent(
-						packageName
-					)}`
+					`https://registry.npmjs.org/${encodeURIComponent(packageName)}`
 				);
 
 				// Fail fast on registry errors.
 				if (!response.ok) {
-					throw new Error(
-						`Registry responded with ${response.status}`
-					);
+					throw new Error(`Registry responded with ${response.status}`);
 				}
 
 				const data = (await response.json()) as RegistryResponse;
@@ -236,10 +219,7 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 				}
 			} catch (error) {
 				if (!cancelled) {
-					console.error(
-						"Failed to fetch versions from registry",
-						error
-					);
+					console.error("Failed to fetch versions from registry", error);
 					setVersionError("Unable to load versions");
 					setVersions([]);
 					setSelectedVersion("latest");
@@ -264,14 +244,9 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 		if (showBeta) {
 			setFilteredVersions(versions.slice(0, limit));
 		} else {
-			const filtered = versions
-				.filter((v) => !v.includes("-"))
-				.slice(0, limit);
+			const filtered = versions.filter((v) => !v.includes("-")).slice(0, limit);
 			setFilteredVersions(filtered);
-			if (
-				selectedVersion !== "latest"
-				&& !filtered.includes(selectedVersion)
-			) {
+			if (selectedVersion !== "latest" && !filtered.includes(selectedVersion)) {
 				// Reset to latest when the selected version is filtered out.
 				setSelectedVersion("latest");
 			}
@@ -340,25 +315,23 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 							aria-haspopup="true"
 							aria-expanded={settingsOpen}
 							onClick={() => setSettingsOpen((s) => !s)}
-							aria-label="Open install assistant settings">
+							aria-label="Open install assistant settings"
+						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								height="1rem"
 								width="1rem"
 								viewBox="0 0 24 24"
-								fill="currentColor">
+								fill="currentColor"
+							>
 								<path d="M0 0h24v24H0V0z" fill="none" />
 								<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
 							</svg>
 						</button>
 						{settingsOpen && (
 							<div className="nia-settings-dropdown" role="menu">
-								<label
-									className="nia-field"
-									htmlFor="nia-show-beta-checkbox">
-									<span className="nia-label">
-										Beta versions
-									</span>
+								<label className="nia-field" htmlFor="nia-show-beta-checkbox">
+									<span className="nia-label">Beta versions</span>
 									<span className="nia-checkbox-toggle-container">
 										<input
 											id="nia-show-beta-checkbox"
@@ -366,24 +339,15 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 											type="checkbox"
 											className="nia-checkbox nia-checkbox-toggle-input"
 											checked={showBeta}
-											onChange={() =>
-												setShowBeta((prev) => !prev)
-											}
-											disabled={
-												loadingVersions
-												|| versionError !== null
-											}
+											onChange={() => setShowBeta((prev) => !prev)}
+											disabled={loadingVersions || versionError !== null}
 										/>
 										<span className="nia-checkbox-toggle"></span>
 									</span>
 								</label>
 
-								<label
-									className="nia-field"
-									htmlFor="nia-max-versions-input">
-									<span className="nia-label">
-										Max versions
-									</span>
+								<label className="nia-field" htmlFor="nia-max-versions-input">
+									<span className="nia-label">Max versions</span>
 									<input
 										id="nia-max-versions-input"
 										data-testid="max-versions-input"
@@ -393,14 +357,9 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 										max={99}
 										value={maxVersions}
 										onChange={(e) => {
-											const v = parseInt(
-												e.target.value,
-												10
-											);
+											const v = parseInt(e.target.value, 10);
 											setMaxVersions(
-												!Number.isNaN(v) && v > 0
-													? Math.min(v, 99)
-													: 1
+												!Number.isNaN(v) && v > 0 ? Math.min(v, 99) : 1
 											);
 										}}
 									/>
@@ -410,9 +369,8 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 					</div>
 				</div>
 				<p className="nia-subtitle">
-					Generate install commands for any package and version.
-					Select your package manager, dependency type, and version to
-					get the exact command you need.
+					Generate install commands for any package and version. Select your package
+					manager, dependency type, and version to get the exact command you need.
 				</p>
 			</header>
 
@@ -425,9 +383,8 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 						className="nia-select"
 						value={pkgManager}
 						aria-label="Select package manager pkgManager"
-						onChange={(e) =>
-							setPkgManager(e.target.value as PkgManager)
-						}>
+						onChange={(e) => setPkgManager(e.target.value as PkgManager)}
+					>
 						<option value="npm">npm</option>
 						<option value="yarn">yarn</option>
 						<option value="pnpm">pnpm</option>
@@ -442,9 +399,8 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 						className="nia-select"
 						value={dependencyType}
 						aria-label="Select dependency type"
-						onChange={(e) =>
-							setDependencyType(e.target.value as DependencyType)
-						}>
+						onChange={(e) => setDependencyType(e.target.value as DependencyType)}
+					>
 						<option value="prod">Production</option>
 						<option value="dev">Development</option>
 					</select>
@@ -459,46 +415,40 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 						value={selectedVersion}
 						aria-label="Select package version"
 						onChange={(e) => setSelectedVersion(e.target.value)}
-						disabled={loadingVersions}>
+						disabled={loadingVersions}
+					>
 						{versionOptions.map((v) => (
 							<option key={v} value={v}>
 								{v === "latest" ? "latest" : v}
 							</option>
 						))}
 					</select>
-					{loadingVersions && (
-						<span className="nia-hint">Loading versions…</span>
-					)}
+					{loadingVersions && <span className="nia-hint">Loading versions…</span>}
 					{versionError && !loadingVersions && (
-						<span className="nia-hint nia-hint-error">
-							{versionError}
-						</span>
+						<span className="nia-hint nia-hint-error">{versionError}</span>
 					)}
 				</label>
 			</div>
 
 			<button
 				type="button"
-				className={`nia-command-button${
-					copied ? " nia-command-button--copied" : ""
-				}`}
+				className={`nia-command-button${copied ? " nia-command-button--copied" : ""}`}
 				onClick={handleCopy}
-				aria-label={
-					copied ? "Command line copied" : "Copy install command line"
-				}>
+				aria-label={copied ? "Command line copied" : "Copy install command line"}
+			>
 				<span className="nia-command-text">{command}</span>
 				<span
-					className={`nia-copy-icon${
-						copied ? " nia-copy-icon--active" : ""
-					}`}
-					aria-hidden="true">
+					className={`nia-copy-icon${copied ? " nia-copy-icon--active" : ""}`}
+					aria-hidden="true"
+				>
 					{copied ? (
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							height="1rem"
 							width="1rem"
 							viewBox="0 0 24 24"
-							fill="currentColor">
+							fill="currentColor"
+						>
 							<path d="M0 0h24v24H0V0z" fill="none" />
 							<path d="M9 16.17L5.53 12.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L9 16.17z" />
 						</svg>
@@ -509,7 +459,8 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({
 							height="1rem"
 							width="1rem"
 							viewBox="0 0 24 24"
-							fill="currentColor">
+							fill="currentColor"
+						>
 							<g>
 								<rect fill="none" height="24" width="24" />
 							</g>

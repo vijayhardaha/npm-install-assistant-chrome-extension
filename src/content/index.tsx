@@ -48,9 +48,7 @@ function mountSidebarApp(): void {
 		return;
 	}
 
-	const aside = document.querySelector<HTMLElement>(
-		'aside[aria-label="Package sidebar"]'
-	);
+	const aside = document.querySelector<HTMLElement>('aside[aria-label="Package sidebar"]');
 	if (!aside) {
 		return;
 	}
@@ -111,16 +109,12 @@ function setupObservers(): void {
 
 	try {
 		// Patch pushState/replaceState to detect SPA navigations.
-		history.pushState = function (
-			...args: Parameters<typeof originalPushState>
-		) {
+		history.pushState = function (...args: Parameters<typeof originalPushState>) {
 			originalPushState.apply(history, args);
 			handleHistoryChange();
 		} as typeof history.pushState;
 
-		history.replaceState = function (
-			...args: Parameters<typeof originalReplaceState>
-		) {
+		history.replaceState = function (...args: Parameters<typeof originalReplaceState>) {
 			originalReplaceState.apply(history, args);
 			handleHistoryChange();
 		} as typeof history.replaceState;

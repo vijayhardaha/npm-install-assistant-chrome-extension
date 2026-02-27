@@ -1,23 +1,57 @@
 {
+	// ==============================================================================
+	//  _______ _____  _____  ____  _   _ ______ _____ _____
+	// |__   __/ ____|/ ____|/ __ \| \ | |  ____|_   _/ ____|
+	//    | | | (___ | |    | |  | |  \| | |__    | || |  __
+	//    | |  \___ \| |    | |  | | . ` |  __|   | || | |_ |
+	//    | |  ____) | |____| |__| | |\  | |     _| || |__| |
+	//    |_| |_____/ \_____|\____/|_| \_|_|    |_____\_____|
+	//
+	// TYPESCRIPT ENGINE CONFIGURATION
+	// ==============================================================================
+	// Purpose: Static type-checking and module resolution strategy for the
+	// entire codebase, ensuring robust and predictable behavior.
+	// ==============================================================================
+
 	"compilerOptions": {
-		"target": "ES2020",
-		"lib": ["DOM", "DOM.Iterable", "ES2020"],
+		/* ==========================================
+		   🔧 LANGUAGE & ENVIRONMENT
+		   ========================================== */
+		"target": "ES2022",
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"esModuleInterop": true,
+
+		/* ==========================================
+		   🏗️ REACT & JSX
+		   ========================================== */
 		"jsx": "react-jsx",
 		"jsxImportSource": "react",
-		"module": "ESNext",
-		"moduleResolution": "Node",
+
+		/* ==========================================
+		   🛡️ TYPE SAFETY & STRICTNESS
+		   ========================================== */
 		"strict": true,
-		"noEmit": true,
 		"skipLibCheck": true,
-		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
+		"noEmit": true, // We rely on Next.js/SWC to handle compilation
+
+		/* ==========================================
+		   📦 RESOLUTION & ALIASING
+		   ========================================== */
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"types": ["vitest/globals", "@testing-library/jest-dom"],
 		"paths": {
-			"@/*": ["./src/*"] // Clean imports: '@/components/X' -> 'src/components/X'
-		}
+			"@/*": ["./src/*"]
+		},
+		"types": ["vitest/globals", "@testing-library/jest-dom"]
 	},
-	"include": ["src"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts"
+	],
 	"exclude": ["node_modules"]
 }

@@ -1,11 +1,41 @@
-# Files & Directories related to build & test tools.
-# Exclude the node_modules directory from version control.
-/node_modules
-# Exclude the vendor directory from version control.
-/vendor
+# ==============================================================================
+#  _  _____  _   _  ____  _____  ______
+# (_)/ ____|| \ | |/ __ \|  __ \|  ____|
+#  _| |  __ |  \| | |  | | |__) | |__
+#| | | |_ | | . ` | |  | |  _  /|  __|
+#| | |__| | | |\  | |__| | | \ \| |____
+#|_|\_____| |_| \_|\____/|_|  \_\______|
+#
+#  STYLELINT IGNORE CONFIGURATION
+# ==============================================================================
+# Purpose: Defines the files and directories that the Stylelint engine
+# should skip to prevent linting build artifacts or external libraries.
+# ==============================================================================
 
-# Plugin files and folders.
-# Exclude the assets directory from version control.
-/dist
-/build
-/assets
+# ==========================================
+# 📂 DEPENDENCIES & VENDOR
+# ==========================================
+node_modules/
+vendor/
+
+# ==========================================
+# 🏗️ BUILD & OUTPUTS
+# ==========================================
+dist/
+build/
+.next/
+out/
+coverage/
+
+# ==========================================
+# 🖼️ STATIC ASSETS & PUBLIC
+# ==========================================
+public/
+assets/
+*.min.css
+
+# ==========================================
+# ⚙️ CONFIGURATION FILES
+# ==========================================
+.vscode/
+.pnpm-store/

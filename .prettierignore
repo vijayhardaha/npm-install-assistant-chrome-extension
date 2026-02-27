@@ -1,8 +1,71 @@
+###############################################################################
+#  _____           _   _   _              _____
+# |  __ \         | | | | (_)            |_   _|
+# | |__) | __ ___ | |_| |_ _  ___ _ __     | |  __ _ _ __   ___  _ __ ___
+# |  ___/ '__/ _ \| __| __| |/ _ \ '__|    | | / _` | '_ \ / _ \| '__/ _ \
+# | |   | | |  __/ |_| |_| |  __/ |      _| || (_| | | | | (_) | | |  __/
+# |_|   |_|  \___|\__|\__|_|\___|_|     |_____\__, |_| |_|\___/|_|  \___|
+#                                              __/ |
+# PRETTIER EXCLUSION RULES                    |___/
+###############################################################################
+#
+# PURPOSE:
+#   Tells the Prettier formatter which files to skip. This prevents
+#   unnecessary processing of large, generated, or binary files.
+#
+# QUICK TIP:
+#   - Check what Prettier sees: `npx prettier --check .`
+#   - Fix all files: `npx prettier --write .`
+#
+###############################################################################
+
+# ==========================================
+# 🧱 PROJECT & BUILD ARTIFACTS
+# ==========================================
+# We never want to format external dependencies or compiled code
 node_modules/
+.next
 dist/
 coverage/
 assets/
+build
+out
+
+# ==========================================
+# 🖼️ STATIC ASSETS & PUBLIC DATA
+# ==========================================
+# Public assets (images, fonts, robots.txt) often don't need formatting
+public/
+vendor/
+
+# ==========================================
+# ⚙️ SYSTEM & VERSION CONTROL
+# ==========================================
+# Let Git manage its own internal metadata
+.git
+.svn
+.hg
 .github/*.yml
+
+# ==========================================
+# 📄 MISCELLANEOUS
+# ==========================================
+# Ignore lockfiles to prevent manual merge conflicts
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 .husky/_
 .husky/*.log
 *.log
+
+# Ignore minified files which are intentionally unreadable
+*.min.*
+
+# Ignore config files which may contain complex structures not suited for Prettier
+*.config.*
+*config.*
+.vscode/**/*.json
+
+###############################################################################
+# END OF PRETTIER IGNORE
+###############################################################################
