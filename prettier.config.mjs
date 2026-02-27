@@ -20,7 +20,7 @@
 /** @type {import("prettier").Config} */
 const config = {
 	// --- Layout & Spacing ---
-	printWidth: 100,      // Max line length before wrapping
+	printWidth: 80,      // Max line length before wrapping
 	tabWidth: 4,          // Visual width of a tab
 	useTabs: true,        // Use actual tabs
 
