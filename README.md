@@ -35,16 +35,16 @@ When you open a package page on npm, the assistant automatically appears and let
 ### 🧠 Smart Configurations
 
 - Select your package manager
-    - npm
-    - yarn
-    - pnpm
+    - [npm](https://www.npmjs.com/)
+    - [yarn](https://yarnpkg.com/)
+    - [pnpm](https://pnpm.io/)
 - Choose dependency type
     - Production
     - Development
 - Specify version
     - latest
     - specific version
-    - semver tag
+    - [semver](https://semver.org/) tag
 
 And instantly see the final command generated in real time.
 
@@ -58,7 +58,7 @@ Open a package. It’s there. No toggling. No setup rituals.
 
 ### ⚡ Instant, Correct Command Generation
 
-Switch between npm, yarn, pnpm and watch the command adapt instantly.
+Switch between [npm](https://www.npmjs.com/), [yarn](https://yarnpkg.com/), [pnpm](https://pnpm.io/) and watch the command adapt instantly.
 
 ### 📋 One-Click Copy
 
@@ -78,11 +78,11 @@ It removes friction from something you do dozens of times a week.
 
 This extension is perfect if you:
 
-- Jump between npm, yarn, and pnpm projects
+- Jump between [npm](https://www.npmjs.com/), [yarn](https://yarnpkg.com/), and [pnpm](https://pnpm.io/) projects
 - Constantly switch between dev and prod dependencies
 - Care about clean commands
 - Hate repetitive terminal typing
-- Live on npm registry pages
+- Live on [npm registry](https://www.npmjs.com/) pages
 
 Frontend devs, backend devs, indie hackers, OSS contributors — if you install packages, this is for you.
 
@@ -90,17 +90,17 @@ Frontend devs, backend devs, indie hackers, OSS contributors — if you install 
 
 ## 📦 How To Install (From ZIP Release)
 
-1. Go to the Releases section of this repository.
+1. Go to the [Releases](https://github.com/vijayhardaha/npm-install-assistant-chrome-extension/releases) section of this repository.
 2. Download the latest npm-install-assistant.zip file.
 3. Extract the ZIP file on your computer.
-4. Open Chrome and go to:
+4. Open [Chrome](https://www.google.com/chrome/) and go to:
 
     ```
     chrome://extensions
     ```
 
-5. Enable Developer Mode (top right).
-6. Click Load unpacked.
+5. Enable [Developer Mode](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) (top right).
+6. Click [Load unpacked](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
 7. Select the extracted folder.
 8. Done 🎉
 
