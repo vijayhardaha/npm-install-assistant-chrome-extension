@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - "master"
+    paths:
+      - "src/**"
+      - "vite.config.ts"
+      - "vite.styles.config.ts"
+      - "package.json"
+      - "pnpm-lock.yaml"
     tags:
       - "v*"
   pull_request:
