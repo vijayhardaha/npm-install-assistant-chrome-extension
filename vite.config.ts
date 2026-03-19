@@ -1,18 +1,11 @@
 /**
- * ###############################################################################
- * __      _______ _______ ______
- * \ \    / /_   _|__   __|  ____|
- * \ \  / /  | |    | |  | |__
- * \ \/ /   | |    | |  |  __|
- * \  /   _| |_   | |  | |____
- * \/   |_____|  |_|  |______|
- *
- * THE BUILD ENGINE (Vite)
- * ###############################################################################
- * PURPOSE:
- * Orchestrates the asset pipeline, React transformation, and specific
- * Rollup bundling requirements for extensions/content scripts.
- * ###############################################################################
+ * ========================================================================
+ * Vite Configuration
+ * ========================================================================
+ * Purpose: Orchestrates the asset pipeline, React transformation, and
+ *          Rollup bundling specifics for extension content scripts.
+ * Docs: https://vitejs.dev/config/
+ * ========================================================================
  */
 
 import { dirname, resolve } from "node:path";
@@ -26,9 +19,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
-	// ==========================================
-	// 🔌 PLUGINS
-	// ==========================================
+	// ---- Plugins ----
+	// Register Vite plugins: React transformer and static asset copy helper
 	plugins: [
 		react(),
 		viteStaticCopy({
@@ -39,26 +31,24 @@ export default defineConfig({
 		}),
 	],
 
-	// ==========================================
-	// MODULE RESOLUTION
-	// ==========================================
-	// Preserve @ alias parity with editor jsconfig settings.
+	// ---- Module resolution ----
+	// Preserve @ alias parity with editor jsconfig/tsconfig settings
 	resolve: { alias: { "@": resolve(__dirname, "src") } },
 
-	// ==========================================
-	// 🏗️ BUILD STRATEGY
-	// ==========================================
+	// ---- Build strategy ----
+	// Output directory, sourcemap, minification and Rollup options
 	build: {
 		outDir: "dist",
 		emptyOutDir: true,
 		sourcemap: true,
 		minify: true,
 
-		// --- Rollup Specifics ---
+		// ---- Rollup specifics ----
+		// Inputs and output file naming for the extension bundles
 		rollupOptions: {
 			input: {
 				content: resolve(__dirname, "src/content/index.tsx"),
-				styles: resolve(__dirname, "src/ui/styles.scss")
+				styles: resolve(__dirname, "src/ui/styles.scss"),
 			},
 			output: {
 				format: "es",

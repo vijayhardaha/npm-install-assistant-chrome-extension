@@ -1,43 +1,32 @@
 /**
- * ###############################################################################
- * __      _______ _______ ______  _____ _______
- * \ \    / /_   _|__   __|  ____|/ ____|__   __|
- * \ \  / /  | |    | |  | |__  | (___    | |
- * \ \/ /   | |    | |  |  __|  \___ \   | |
- * \  /   _| |_   | |  | |____ ____) |  | |
- * \/   |_____|  |_|  |______|_____/   |_|
- *
- * THE TRUTH SEEKER (Vitest)
- * ###############################################################################
- * PURPOSE:
- * Configures the unit and integration testing runner. Uses JSDOM to
- * simulate a browser environment for React component testing.
- * ###############################################################################
+ * ========================================================================
+ * Vitest Configuration
+ * ========================================================================
+ * Purpose: Configure Vitest for unit and integration tests (jsdom env)
+ * Docs: https://vitest.dev/config/
+ * ========================================================================
  */
 
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	test: {
-		// ==========================================
-		// 🌐 ENVIRONMENT
-		// ==========================================
-		// Simulates a browser environment (DOM) for React components
+		// ---- Environment ----
+		// Use JSDOM so React components can be mounted in tests. This
+		// provides a browser-like DOM API for rendering and assertions.
 		environment: "jsdom",
 
-		// ==========================================
-		// ⚙️ SETUP & GLOBALS
-		// ==========================================
-		// Path to the file that runs before each test (e.g., jest-dom matchers)
+		// ---- Setup & Globals ----
+		// Setup file executed before running tests (e.g., matchers, globals)
 		setupFiles: ["./src/test/setup.ts"],
 
-		// Allows use of 'describe', 'it', 'expect' without manual imports
+		// ---- Globals ----
+		// Allow global test helpers like `describe`, `it`, `expect` for
+		// convenience in test files.
 		globals: true,
 
-		// ==========================================
-		// 🔍 COVERAGE & OUTPUT
-		// ==========================================
-		// Optional: Define which files to include in coverage reports
+		// ---- Coverage & Output ----
+		// Coverage configuration: include source files, exclude test helpers
 		coverage: {
 			include: ["src/**/*.{ts,tsx}"],
 			exclude: ["src/test/**", "**/node_modules/**"],
