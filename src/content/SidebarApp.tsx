@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-type PkgManager = 'npm' | 'yarn' | 'pnpm';
+type PkgManager = 'npm' | 'yarn' | 'pnpm' | 'bun';
 type DependencyType = 'prod' | 'dev';
 
 /**
@@ -23,6 +23,7 @@ interface RegistryResponse {
   versions?: Record<string, unknown>;
 }
 
+const PKG_MANAGERS: PkgManager[] = ['npm', 'yarn', 'pnpm', 'bun'];
 const MAX_VERSIONS = 10;
 const PKG_MANAGER_STORAGE_KEY = 'nia_package_manager';
 const SHOW_BETA_STORAGE_KEY = 'nia_show_beta';
@@ -76,6 +77,13 @@ function buildInstallCommand(params: {
   const versionSuffix = version && version !== 'latest' ? `@${version}` : '';
   const pkgWithVersion = `${packageName}${versionSuffix}`;
 
+  if (pkgManager === 'bun') {
+    if (dependencyType === 'dev') {
+      return `bun add --dev ${pkgWithVersion}`;
+    }
+    return `bun add ${pkgWithVersion}`;
+  }
+
   if (pkgManager === 'npm') {
     if (dependencyType === 'dev') {
       return `npm install --save-dev ${pkgWithVersion}`;
@@ -121,8 +129,8 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
     // Load preferred pkgManager from localStorage, and settings if present.
     try {
       const stored = window.localStorage.getItem(PKG_MANAGER_STORAGE_KEY);
-      if (stored === 'npm' || stored === 'yarn' || stored === 'pnpm') {
-        setPkgManager(stored);
+      if (stored !== null && PKG_MANAGERS.includes(stored as PkgManager)) {
+        setPkgManager(stored as PkgManager);
       }
 
       // Load persisted showBeta and maxVersions settings
@@ -375,9 +383,11 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
             aria-label="Select package manager pkgManager"
             onChange={(e) => setPkgManager(e.target.value as PkgManager)}
           >
-            <option value="npm">npm</option>
-            <option value="yarn">yarn</option>
-            <option value="pnpm">pnpm</option>
+            {PKG_MANAGERS.map((manager) => (
+              <option key={manager} value={manager}>
+                {manager}
+              </option>
+            ))}
           </select>
         </label>
 
