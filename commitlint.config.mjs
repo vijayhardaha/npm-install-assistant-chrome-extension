@@ -1,25 +1,20 @@
 /**
- * ###############################################################################
- * _____ ____  __  __ __  __ _____ _______ _      _____ _   _ _______
- * / ____/ __ \|  \/  |  \/  |_   _|__   __| |    |_   _| \ | |__   __|
- * | |   | |  | | \  / | \  / | | |    | |  | |      | | |  \| |  | |
- * | |   | |  | | |\/| | |\/| | | |    | |  | |      | | | . ` |  | |
- * | |___| |__| | |  | | |  | |_| |_   | |  | |____ _| |_| |\  |  | |
- * \_____\____/|_|  |_|_|  |_|_____|  |_|  |______|_____|_| \_|  |_|
- * * GIT COMMIT ENFORCER
- * ###############################################################################
- * PURPOSE:
- * Enforces Conventional Commits (feat:, fix:, chore:) to ensure the
- * project history remains readable and compatible with automated changelogs.
- * ###############################################################################
+ * =======================================================================
+ * Commitlint Configuration
+ * =======================================================================
+ * Purpose: Enforce conventional commits and project commit style.
+ * Docs: https://commitlint.js.org/#/
+ * =======================================================================
  */
 
 /** @type {import('@commitlint/types').UserConfig} */
 const config = {
-	// --- Base Ruleset ---
+	// ---- Base Ruleset ----
+	// Use the conventional commits preset as the starting point
 	extends: ["@commitlint/config-conventional"],
 
-	// --- Strict Standards ---
+	// ---- Strict Standards ----
+	// Project-specific stricter rules layered on top of the base preset
 	rules: {
 		// Enforce a concise header to keep 'git log --oneline' clean
 		"header-max-length": [2, "always", 50],
