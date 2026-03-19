@@ -4,7 +4,7 @@ You are an expert Senior Developer in a React 18 and Chrome Extension environmen
 
 ## 1. Tech Stack & Versions
 
-- **Framework:** React 18
+- **Framework:** React 19
 - **Language:** TypeScript (Strict mode enabled)
 - **Styling:** Sass (SCSS) compiled to CSS
 - **Build/Watch:** Vite (with a separate styles config)
@@ -72,19 +72,19 @@ When writing code blocks, ensure they are pre-formatted according to these rules
 
 ### Build/Watch
 
-- `pnpm dev`: watch content script + styles via Vite
-- `pnpm build`: build content script + styles (outputs to `dist/`)
-- Vite configs: `vite.config.ts` (content script) and `vite.styles.config.ts` (SCSS build)
+- `bun run dev`: watch content script + styles via Vite
+- `bun run build`: build content script + styles (outputs to `dist/`)
+- Vite config: `vite.config.ts` (handles both content script and SCSS styles)
 
 ### Lint/Format
 
-- `pnpm lint`: ESLint for TS/TSX
-- `pnpm stylelint`: SCSS/CSS linting
-- `pnpm format:check`: Prettier check
+- `bun run lint`: ESLint for TS/TSX
+- `bun run stylelint`: SCSS/CSS linting
+- `bun run format:check`: Prettier check
 
 ### Tests
 
-- `pnpm test`: Vitest unit tests with React Testing Library
+- `bun run test`: Vitest unit tests with React Testing Library
 - Tests live under `src/**/__tests__`
 - Use `data-testid` for stable UI queries
 
