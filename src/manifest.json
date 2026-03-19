@@ -12,7 +12,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://www.npmjs.com/package/*"],
-			"js": ["js/content.iife.js"],
+			"js": ["js/content.js"],
 			"css": ["ui/styles.css"],
 			"run_at": "document_idle"
 		}
