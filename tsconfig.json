@@ -9,7 +9,9 @@
 
 {
   "compilerOptions": {
-    // ---- Target & libs ----
+    // ----------------------------------------------------------------------
+    // Target & libs
+    // ----------------------------------------------------------------------
     // Use modern ECMAScript features supported by current runtimes
     "target": "ES2024",
 
@@ -19,10 +21,16 @@
     // Use the modern React JSX transform
     "jsx": "react-jsx",
 
-    // ---- Module resolution ----
+    // ----------------------------------------------------------------------
+    // Module resolution
+    // ----------------------------------------------------------------------
     // Use native ESM module syntax and Node-style resolution
-    "module": "esnext",
+    "module": "Preserve",
+    "moduleDetection": "force",
     "moduleResolution": "bundler",
+
+    // Allow importing .ts files directly for type-checking
+    "allowImportingTsExtensions": true,
 
     // Base directory for non-relative imports used by tooling
     "baseUrl": ".",
@@ -36,7 +44,12 @@
     // Allow default interop for CommonJS modules when consuming CJS packages
     "esModuleInterop": true,
 
-    // ---- Compilation strategy ----
+    // ----------------------------------------------------------------------
+    // Compilation strategy
+    // ----------------------------------------------------------------------
+    // Preserve import/export syntax in output
+    "verbatimModuleSyntax": true,
+
     // Speed up consecutive builds by enabling incremental compilation caching
     "incremental": true,
 
@@ -49,7 +62,9 @@
     // Allow mixed JS/TS code during gradual migration
     "allowJs": true,
 
-    // ---- Type safety ----
+    // ----------------------------------------------------------------------
+    // Type safety
+    // ----------------------------------------------------------------------
     // Enable all strict type-checking options for safer code
     "strict": true,
 
@@ -72,7 +87,9 @@
     // Avoid case-sensitivity issues across filesystems
     "forceConsistentCasingInFileNames": true,
 
-    // ---- Plugins & extras ----
+    // ----------------------------------------------------------------------
+    // Plugins & extras
+    // ----------------------------------------------------------------------
     "plugins": [{ "name": "next" }],
     "downlevelIteration": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"]
