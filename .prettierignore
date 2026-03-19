@@ -1,71 +1,79 @@
-###############################################################################
-#  _____           _   _   _              _____
-# |  __ \         | | | | (_)            |_   _|
-# | |__) | __ ___ | |_| |_ _  ___ _ __     | |  __ _ _ __   ___  _ __ ___
-# |  ___/ '__/ _ \| __| __| |/ _ \ '__|    | | / _` | '_ \ / _ \| '__/ _ \
-# | |   | | |  __/ |_| |_| |  __/ |      _| || (_| | | | | (_) | | |  __/
-# |_|   |_|  \___|\__|\__|_|\___|_|     |_____\__, |_| |_|\___/|_|  \___|
-#                                              __/ |
-# PRETTIER EXCLUSION RULES                    |___/
-###############################################################################
-#
-# PURPOSE:
-#   Tells the Prettier formatter which files to skip. This prevents
-#   unnecessary processing of large, generated, or binary files.
-#
-# QUICK TIP:
-#   - Check what Prettier sees: `npx prettier --check .`
-#   - Fix all files: `npx prettier --write .`
-#
-###############################################################################
+# =======================================================================
+# Prettier Ignore
+# =======================================================================
+# Purpose: Tell Prettier which files to skip to avoid formatting
+#          generated or binary files (keeps diffs small and fast).
+# Docs: https://prettier.io/docs/ignore
+# =======================================================================
 
-# ==========================================
-# 🧱 PROJECT & BUILD ARTIFACTS
-# ==========================================
+# ----------------------------------------------------------------------
+# Project & Build Artifacts
+# ----------------------------------------------------------------------
 # We never want to format external dependencies or compiled code
+.next/
+.idea/
+.husky/
 node_modules/
-.next
+build/
 dist/
-coverage/
-assets/
-build
-out
+out/
 
-# ==========================================
-# 🖼️ STATIC ASSETS & PUBLIC DATA
-# ==========================================
-# Public assets (images, fonts, robots.txt) often don't need formatting
-public/
-vendor/
-
-# ==========================================
-# ⚙️ SYSTEM & VERSION CONTROL
-# ==========================================
-# Let Git manage its own internal metadata
-.git
-.svn
-.hg
-.github/*.yml
-
-# ==========================================
-# 📄 MISCELLANEOUS
-# ==========================================
-# Ignore lockfiles to prevent manual merge conflicts
+# ----------------------------------------------------------------------
+# Package Manager Lockfiles
+# ----------------------------------------------------------------------
+# Formatting these can cause massive, merge-breaking diffs.
+# Also covers Yarn and PNPM
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
-.husky/_
-.husky/*.log
+
+# ----------------------------------------------------------------------
+# Static Assets & Public Data
+# ----------------------------------------------------------------------
+# Binary files (images, fonts) cannot be formatted.
+# Using trailing slash '/' ensures we only ignore directories
+# named 'public'
+public/
+vendor/
+assets/
+static/
+
+# ----------------------------------------------------------------------
+# System & Version Control
+# ----------------------------------------------------------------------
+.git/
+.hg/
+.svn/
+
+# ----------------------------------------------------------------------
+# Markdown & Docs (Optional)
+# ----------------------------------------------------------------------
+# Prettier wraps markdown aggressively. You might want to disable this
+# if you prefer manual line breaks in documentation.
+# README.md
+# CHANGELOG.md
+
+# ----------------------------------------------------------------------
+# Minified & Generated Files
+# ----------------------------------------------------------------------
+# Never format minified code; it breaks the "minified" purpose
+*.min.js
+*.min.css
+*.min.map
+
+# ----------------------------------------------------------------------
+# Environment & Config
+# ----------------------------------------------------------------------
+# .env files often rely on specific spacing or comments that vary by
+# parser. .editorconfig defines the rules, prettier shouldn't fight it.
+.env
+.env.*
+.editorconfig
+
+# ----------------------------------------------------------------------
+# Logs & Cache
+# ----------------------------------------------------------------------
+# Logs are generated text files, no need to format
 *.log
-
-# Ignore minified files which are intentionally unreadable
-*.min.*
-
-# Ignore config files which may contain complex structures not suited for Prettier
-*.config.*
-*config.*
-.vscode/**/*.json
-
-###############################################################################
-# END OF PRETTIER IGNORE
-###############################################################################
+npm-debug.log*
+.cache
