@@ -1,87 +1,81 @@
 /**
- * ###############################################################################
- * ______  _____  _      _____ _   _ _______
- * |  ____|/ ____|| |    |_   _| \ | |__   __|
- * | |__  | (___  | |      | | |  \| |  | |
- * |  __|  \___ \ | |      | | | . ` |  | |
- * | |____ ____) || |____ _| |_| |\  |  | |
- * |______|_____/ |______|_____|_| \_|  |_|
- *
- * THE LOGIC GUARDIAN (Flat Config)
- * ###############################################################################
- * PURPOSE:
- * Enforces strict coding standards, catches logical errors, and ensures
- * React/TypeScript best practices are followed across the codebase.
- * ###############################################################################
+ * =====================================================================
+ * Eslint Configuration
+ * =====================================================================
+ * Purpose: Project-wide ESLint configuration for TypeScript, React, and
+ *          Chrome Extension content scripts. Enforces code quality and
+ *          consistent styling.
+ * Docs: https://eslint.org/docs/latest/use/configure/configuration-files-new
+ * =====================================================================
  */
 
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
-import reactPlugin from "eslint-plugin-react";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
-import eslintConfigPrettier from "eslint-config-prettier/flat";
-import eslintPluginPrettier from "eslint-plugin-prettier/flat";
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-export default tseslint.defineConfig(
-	// --- Base Recommended Configs ---
-	pluginJs.configs.recommended,
-	...tseslint.configs.recommended,
+import { FlatCompat } from '@eslint/eslintrc';
+import js from '@eslint/js';
+import tsParser from '@typescript-eslint/parser';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import globals from 'globals';
 
-	{
-		// ==========================================
-		// 📂 TARGETS & EXCLUSIONS
-		// ==========================================
-		files: ["src/**/*.{ts,tsx}", "gulpfile.mjs"],
-		ignores: ["node_modules", "dist", "assets"],
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-		// ==========================================
-		// ⚙️ ENVIRONMENT & PARSING
-		// ==========================================
-		languageOptions: {
-			ecmaVersion: "latest",
-			sourceType: "module",
-			parserOptions: {
-				ecmaFeatures: {
-					jsx: true,
-				},
-			},
-			globals: {
-				...globals.browser,
-				...globals.node, // Added Node for gulpfile/config support
-			},
-		},
+const compat = new FlatCompat({ baseDirectory: __dirname, recommendedConfig: js.configs.recommended });
 
-		// ==========================================
-		// 🔌 PLUGINS & SETTINGS
-		// ==========================================
-		plugins: {
-			react: reactPlugin,
-			"react-hooks": reactHooksPlugin,
-			prettier: eslintPluginPrettier,
-		},
-		settings: {
-			react: {
-				version: "detect", // Auto-detect React version for rules
-			},
-		},
+export default defineConfig([
+  globalIgnores([
+    '**/.git/',
+    '**/.idea/',
+    '**/.vscode/',
+    '**/.husky/',
+    '**/node_modules/',
+    '**/dist/',
+    '**/build/',
+    '**/assets/',
+    '**/coverage/',
+    '**/*.log',
+    '**/.DS_Store',
+    '**/*.tmp',
+  ]),
 
-		// ==========================================
-		// 🛡️ RULES & ENFORCEMENT
-		// ==========================================
-		rules: {
-			// --- React Specific ---
-			"react/react-in-jsx-scope": "off", // Not needed in React 17+
-			"react/jsx-uses-react": "off",     // Not needed in React 17+
-			"react-hooks/rules-of-hooks": "error",
-			"react-hooks/exhaustive-deps": "warn",
+  ...compat.extends(
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:prettier/recommended'
+  ),
 
-			// --- Prettier Integration ---
-			"prettier/prettier": "error", // Treat formatting issues as errors
-		},
-	},
+  {
+    files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
 
-	// --- Prettier Conflict Resolution ---
-	// Must be the last item to override other rules
-	eslintConfigPrettier
-);
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: { ...globals.browser, ...globals.node },
+      parser: tsParser,
+      parserOptions: { ecmaFeatures: { jsx: true }, tsconfigRootDir: __dirname },
+    },
+
+    settings: { react: { version: 'detect' } },
+
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'prettier/prettier': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          args: 'after-used',
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          caughtErrors: 'all',
+        },
+      ],
+    },
+  },
+]);
