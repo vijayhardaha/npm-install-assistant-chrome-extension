@@ -15,7 +15,7 @@
 		"stylelint": "stylelint \"src/**/*.{css,scss}\"",
 		"stylelint:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
 		"types": "tsc --noEmit",
-		"pack-local-extension": "bun run lint && bun run format:check && bun run stylelint && bun run build && bun run test && mkdir -p ~/chrome-extensions && rm -rf ~/chrome-extensions/npm-install-assistant && cp -R dist ~/chrome-extensions/npm-install-assistant",
+		"pack:ext": "bun run lint && bun run format:check && bun run stylelint && bun run build && bun run test && mkdir -p ~/chrome-extensions && rm -rf ~/chrome-extensions/npm-install-assistant && cp -R dist ~/chrome-extensions/npm-install-assistant",
 		"prepare": "husky"
 	},
 	"type": "module",
