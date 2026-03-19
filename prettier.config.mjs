@@ -1,52 +1,63 @@
 /**
- * ###############################################################################
- * _____                _     _   _               _____             _
- * |  __ \              | |   | | | |             / ____|           / ____(_)
- * | |__) | __ ___  ___ | |_  | |_| |_ ___ _ __ | |     ___  _ __ | |     _  __ _
- * |  ___/ '__/ _ \/ _ \| __| | __| __/ _ \ '__|| |    / _ \| '_ \| |_   | |/ _` |
- * | |   | | |  __/  __/ |_  | |_| ||  __/ |   | |___| (_) | | | | |____| | (_| |
- * |_|   |_|  \___|\___|\__|  \__|\__\___|_|    \_____\___/|_| |_|\_____|_|\__, |
- * __/ |
- * PRETTIER CODE ARCHITECT (CJS)                                           |___/
- * ###############################################################################
- *
- * PURPOSE:
- * CommonJS version for maximum compatibility with legacy Node.js environments
- * and specific build tools that do not yet support ESM.
- *
- * ###############################################################################
+ * ======================================================================
+ * Prettier Configuration
+ * ======================================================================
+ * Purpose: Defines code formatting rules to ensure consistent style across the
+ * repository. Use `npx prettier --write .` to apply these rules.
+ * Docs: https://prettier.io/docs/configuration
+ * ======================================================================
  */
 
 /** @type {import("prettier").Config} */
 const config = {
-	// --- Layout & Spacing ---
-	printWidth: 80,      // Max line length before wrapping
-	tabWidth: 4,          // Visual width of a tab
-	useTabs: true,        // Use actual tabs
+	// ---- Layout & Spacing ----
+	// Maximum line length before Prettier wraps expressions
+	printWidth: 120,
+	// Number of spaces per indentation level
+	tabWidth: 2,
+	// Use spaces instead of tab characters
+	useTabs: false,
 
-	// --- General Syntax ---
-	semi: true,           // Always use semicolons
-	singleQuote: false,   // Double quotes (standard for HTML/React props)
-	endOfLine: "auto",    // Maintains existing line endings
+	// ---- General Syntax ----
+	semi: true, // Enforce semicolons at the end of statements
+	singleQuote: false, // Prefer single quotes for strings
+	endOfLine: "auto", // Respect existing line endings to avoid unnecessary diffs
 
-	// --- Logic & Functions ---
-	arrowParens: "always",						// (x) => {} instead of x => {}
-	trailingComma: "es5",						// Commas where valid in ES5
-	bracketSpacing: true,						// { foo: bar }
-	bracketSameLine: false,						// Puts > on a new line
-	proseWrap: "preserve",						// Respect manual line breaks
-	experimentalOperatorPosition: "start",	// Align operators in multiline expressions
-	objectWrap: "collapse",						// Preserve existing wrapping of objects
+	// ---- Behavior & Edge Cases ----
+	arrowParens: "always", // Include parens around single-arg arrow functions
+	trailingComma: "es5", // Add trailing commas where valid in ES5 (objects, arrays)
+	bracketSpacing: true, // Print spaces between object braces: { foo: bar }
+	bracketSameLine: false, // Put > of multi-line HTML/JSX elements on a new line
+	proseWrap: "preserve", // Respect manual wrapping in markdown/ prose
+	experimentalOperatorPosition: "start", // Place operators at line start in multiline expressions
+	objectWrap: "collapse", // Preserve developer's object wrapping where present
 
-	// --- Plugins ---
-	// Note: In CJS, some plugins must be required if not auto-loaded
+	// ---- Plugins ----
 	// plugins: ["prettier-plugin-tailwindcss"],
 
+	// ---- Overrides (Grouped by Language) ----
 	overrides: [
 		{
-			// --- Override for JSON files to disable trailing commas ---
-			files: ["*.json", "*.jsonc"],
+			// Backend: Python & PHP (PEP8 / PSR-12)
+			files: ["*.py", "*.php"],
+			options: { tabWidth: 4, useTabs: false },
+		},
+		{
+			// Scripting: JS/TS
+			files: ["*.js", "*.ts", "*.mjs", "*.cjs", "*.jsx", "*.tsx"],
+			options: { tabWidth: 2, singleQuote: true },
+		},
+		{
+			// Styles: CSS / SASS
+			files: ["*.css", "*.scss", "*.sass"],
+			options: { tabWidth: 2 },
+		},
+		{
+			// Data & Docs: JSON / YAML / Markdown
+			files: ["*.json", "*.jsonc", "*.yml", "*.yaml", "*.md", "*.mdx"],
 			options: {
+				tabWidth: 2,
+				// JSON does not support trailing commas — disable for these formats
 				trailingComma: "none",
 			},
 		},
