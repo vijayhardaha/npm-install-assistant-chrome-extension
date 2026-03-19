@@ -1,57 +1,97 @@
+// =======================================================================
+// Typescript Configuration
+// =======================================================================
+// Purpose: Static type-checking and module resolution strategy for the
+//          repository, ensuring predictable behavior and strong typing
+//          across code.
+// Docs: https://www.typescriptlang.org/tsconfig
+// =======================================================================
+
 {
-	// ==============================================================================
-	//  _______ _____  _____  ____  _   _ ______ _____ _____
-	// |__   __/ ____|/ ____|/ __ \| \ | |  ____|_   _/ ____|
-	//    | | | (___ | |    | |  | |  \| | |__    | || |  __
-	//    | |  \___ \| |    | |  | | . ` |  __|   | || | |_ |
-	//    | |  ____) | |____| |__| | |\  | |     _| || |__| |
-	//    |_| |_____/ \_____|\____/|_| \_|_|    |_____\_____|
-	//
-	// TYPESCRIPT ENGINE CONFIGURATION
-	// ==============================================================================
-	// Purpose: Static type-checking and module resolution strategy for the
-	// entire codebase, ensuring robust and predictable behavior.
-	// ==============================================================================
+  "compilerOptions": {
+    // ---- Target & libs ----
+    // Use modern ECMAScript features supported by current runtimes
+    "target": "ES2024",
 
-	"compilerOptions": {
-		/* ==========================================
-		   🔧 LANGUAGE & ENVIRONMENT
-		   ========================================== */
-		"target": "ES2022",
-		"lib": ["DOM", "DOM.Iterable", "ESNext"],
-		"module": "ESNext",
-		"moduleResolution": "Bundler",
-		"esModuleInterop": true,
+    // Include DOM types and iterable helpers for browser-based code
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
 
-		/* ==========================================
-		   🏗️ REACT & JSX
-		   ========================================== */
-		"jsx": "react-jsx",
-		"jsxImportSource": "react",
+    // Use the modern React JSX transform
+    "jsx": "react-jsx",
 
-		/* ==========================================
-		   🛡️ TYPE SAFETY & STRICTNESS
-		   ========================================== */
-		"strict": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"noEmit": true, // We rely on Next.js/SWC to handle compilation
+    // ---- Module resolution ----
+    // Use native ESM module syntax and Node-style resolution
+    "module": "esnext",
+    "moduleResolution": "bundler",
 
-		/* ==========================================
-		   📦 RESOLUTION & ALIASING
-		   ========================================== */
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"paths": {
-			"@/*": ["./src/*"]
-		},
-		"types": ["vitest/globals", "@testing-library/jest-dom"]
-	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts"
-	],
-	"exclude": ["node_modules"]
+    // Base directory for non-relative imports used by tooling
+    "baseUrl": ".",
+
+    // Map `@/*` to `./src/*` for cleaner absolute imports
+    "paths": { "@/*": ["./src/*"] },
+
+    // Allow importing JSON files as modules
+    "resolveJsonModule": true,
+
+    // Allow default interop for CommonJS modules when consuming CJS packages
+    "esModuleInterop": true,
+
+    // ---- Compilation strategy ----
+    // Speed up consecutive builds by enabling incremental compilation caching
+    "incremental": true,
+
+    // Do not emit JS during type-checking; Next.js handles build output
+    "noEmit": true,
+
+    // Required for tools like swc/esbuild used in Next.js
+    "isolatedModules": true,
+
+    // Allow mixed JS/TS code during gradual migration
+    "allowJs": true,
+
+    // ---- Type safety ----
+    // Enable all strict type-checking options for safer code
+    "strict": true,
+
+    // Catch unused local variables and function parameters at compile time
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    // Ensure all code paths return a value or explicitly return nothing
+    "noImplicitReturns": true,
+
+    // Require explicit handling of switch case fallthrough
+    "noFallthroughCasesInSwitch": true,
+
+    // Use modern class field semantics for better compatibility
+    "useDefineForClassFields": true,
+
+    // Skip deep type checks inside node_modules for performance
+    "skipLibCheck": true,
+
+    // Avoid case-sensitivity issues across filesystems
+    "forceConsistentCasingInFileNames": true,
+
+    // ---- Plugins & extras ----
+    "plugins": [{ "name": "next" }],
+    "downlevelIteration": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
+  },
+
+  // ---- Includes ----
+  // Files to include in the project type-checking scope
+  "include": [
+    "*.config.mjs",
+    "*.config.ts",
+    "*.d.ts",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mjs",
+    "**/*.cjs",
+  ],
+
+  // ---- Excludes ----
+  "exclude": ["node_modules"]
 }
