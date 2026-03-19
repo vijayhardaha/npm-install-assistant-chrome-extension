@@ -82,14 +82,14 @@ export default defineConfig([
       // the codebase (optional chaining, nullish coalescing, private class
       // fields, top-level await).
       ecmaVersion: 'latest',
-       // Use ECMAScript modules so the parser accepts `import`/`export` syntax
+      // Use ECMAScript modules so the parser accepts `import`/`export` syntax
       // and ESLint treats files as module scope (affects hoisting and globals).
       sourceType: 'module',
       // Provide common runtime globals from both browser and Node.js so
       // references like `window`, `fetch`, or `process` do not raise undefined
       // errors.
       globals: { ...globals.browser, ...globals.node },
-       // Use the TypeScript parser to support .ts/.tsx syntax and enable
+      // Use the TypeScript parser to support .ts/.tsx syntax and enable
       // @typescript-eslint based rules and type-aware linting when configured.
       parser: tsParser,
       // Enable JSX parsing and point parser at the project's tsconfig so
@@ -101,7 +101,7 @@ export default defineConfig([
     // Let plugins automatically detect framework/runtime specifics
     settings: { react: { version: 'detect' } },
 
-     // ---- Custom rules ----
+    // ---- Custom rules ----
     // Purpose: Project-specific overrides to enforce import order, TypeScript
     // hygiene, Prettier integration and React best-practices. Below each
     // rule or option includes a concise comment explaining its effect.

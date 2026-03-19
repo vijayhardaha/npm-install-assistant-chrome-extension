@@ -35,16 +35,16 @@ When you open a package page on npm, the assistant automatically appears and let
 ### 🧠 Smart Configurations
 
 - Select your package manager
-    - [npm](https://www.npmjs.com/)
-    - [yarn](https://yarnpkg.com/)
-    - [pnpm](https://pnpm.io/)
+  - [npm](https://www.npmjs.com/)
+  - [yarn](https://yarnpkg.com/)
+  - [pnpm](https://pnpm.io/)
 - Choose dependency type
-    - Production
-    - Development
+  - Production
+  - Development
 - Specify version
-    - latest
-    - specific version
-    - [semver](https://semver.org/) tag
+  - latest
+  - specific version
+  - [semver](https://semver.org/) tag
 
 And instantly see the final command generated in real time.
 
@@ -95,9 +95,9 @@ Frontend devs, backend devs, indie hackers, OSS contributors — if you install 
 3. Extract the ZIP file on your computer.
 4. Open [Chrome](https://www.google.com/chrome/) and go to:
 
-    ```
-    chrome://extensions
-    ```
+   ```
+   chrome://extensions
+   ```
 
 5. Enable [Developer Mode](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked) (top right).
 6. Click [Load unpacked](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).

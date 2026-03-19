@@ -29,10 +29,10 @@ We use Feature-Sliced Design architecture. Respect these boundaries:
 
 - **Language:** Use English for code and comments.
 - **Naming:**
-    - **Components:** PascalCase (e.g., `BlogCard.tsx`).
-    - **Functions/Variables:** camelCase (e.g., `fetchPosts`).
-    - **Files:** kebab-case for non-component files (e.g., `api-utils.ts`).
-    - **Constants:** SCREAMING_SNAKE_CASE (e.g., `MAX_RETRIES`).
+  - **Components:** PascalCase (e.g., `BlogCard.tsx`).
+  - **Functions/Variables:** camelCase (e.g., `fetchPosts`).
+  - **Files:** kebab-case for non-component files (e.g., `api-utils.ts`).
+  - **Constants:** SCREAMING_SNAKE_CASE (e.g., `MAX_RETRIES`).
 
 ### Code Formatting (Prettier)
 
@@ -130,8 +130,8 @@ Commit message rules:
 ```typescript
 // GOOD
 interface BlogPost {
-	id: string;
-	title: string;
+  id: string;
+  title: string;
 }
 
 type Status = "draft" | "published";
@@ -156,7 +156,7 @@ type Status = "draft" | "published";
  * @throws {DatabaseError} If the connection fails.
  */
 export async function getPostById(id: string): Promise<BlogPost | null> {
-	// implementation
+  // implementation
 }
 ```
 
@@ -169,23 +169,20 @@ import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps {
-	children: ReactNode;
-	variant?: "primary" | "secondary";
-	onClick?: () => void;
+  children: ReactNode;
+  variant?: "primary" | "secondary";
+  onClick?: () => void;
 }
 
 export function Button({ children, variant = "primary", onClick }: ButtonProps) {
-	return (
-		<button
-			className={cn(
-				"px-4 py-2 rounded-md",
-				variant === "primary" ? "bg-blue-500 text-white" : "bg-gray-200"
-			)}
-			onClick={onClick}
-		>
-			{children}
-		</button>
-	);
+  return (
+    <button
+      className={cn("px-4 py-2 rounded-md", variant === "primary" ? "bg-blue-500 text-white" : "bg-gray-200")}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
 }
 ```
 
