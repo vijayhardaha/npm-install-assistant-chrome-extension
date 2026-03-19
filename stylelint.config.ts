@@ -1,44 +1,50 @@
 /**
- * ###############################################################################
- * _____ _______ __     __ _      ______ _      _____ _   _ _______
- * / ____|__   __|\ \   / /| |    |  ____| |    |_   _| \ | |__   __|
- * | (___    | |    \ \_/ / | |    | |__  | |      | | |  \| |  | |
- * \___ \   | |     \   /  | |    |  __| | |      | | | . ` |  | |
- * ____) |  | |      | |   | |____| |____| |____ _| |_| |\  |  | |
- * |_____/   |_|      |_|   |______|______|______|_____|_| \_|  |_|
- *
- * THE STYLE GUARDIAN (TypeScript)
- * ###############################################################################
- * PURPOSE:
- * Maintains visual consistency and CSS architectural standards. Focuses on
- * SCSS best practices and logical property ordering (SMACSS).
- * ###############################################################################
+ * ======================================================================
+ * Stylelint Configuration
+ * ======================================================================
+ * Purpose: Project-wide Stylelint configuration for Next.js with SCSS
+ *          support. Enforces consistent CSS/SCSS patterns and maintains
+ *          code quality.
+ * Docs: https://stylelint.io/user-guide/configure
+ * ======================================================================
  */
 
 import type { Config } from "stylelint";
 
+// ---- Configuration ----
 const config: Config = {
-	// --- Ruleset Inheritance ---
+	// ---- Extends ----
+	// Use standard SCSS rules and SMACSS ordering for consistent styling
+	// patterns.
 	extends: [
-		"stylelint-config-standard-scss",           // Standard SCSS rules
-		"stylelint-config-property-sort-order-smacss", // Logical SMACSS ordering
+		"stylelint-config-standard-scss",
+		"stylelint-config-property-sort-order-smacss",
 	],
 
-	// --- Plugins ---
+	// ---- Plugins ----
+	// Add stylelint-order plugin to enforce consistent property ordering.
 	plugins: ["stylelint-order"],
 
-	// --- Rule Customization ---
+	// ---- Rules ----
+	// Project-specific overrides to allow flexible naming conventions and
+	// handle edge cases in Next.js/SCSS development. Each rule below includes
+	// a concise explanation of its effect.
 	rules: {
-		// Disable restrictive patterns to allow for creative/flexible naming
+		// --- Naming Conventions ---
+		// Allow creative/flexible class and ID naming patterns (e.g., BEM
+		// variants).
 		"selector-class-pattern": null,
 		"selector-id-pattern": null,
 
-		// Handle specific edge cases in Next.js/SCSS development
+		// --- Next.js / SCSS Edge Cases ---
+		// Disable rules that are overly strict for modern Next.js development.
 		"no-empty-source": null,
 		"function-url-quotes": null,
 		"no-descending-specificity": null,
 
-		// Clean up comment enforcement
+		// --- Comment Enforcement ---
+		// Allow empty comments for development placeholders and commented-out
+		// code.
 		"comment-no-empty": null,
 		"scss/comment-no-empty": null,
 	},
