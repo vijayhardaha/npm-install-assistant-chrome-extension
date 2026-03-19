@@ -4,7 +4,7 @@
 	"private": true,
 	"description": "Chrome extension that adds a React-powered install assistant block to npm package sidebars.",
 	"scripts": {
-		"dev": "concurrently -k \"pnpm run dev:content\" \"pnpm run dev:styles\"",
+		"dev": "concurrently -k \"bun run dev:content\" \"bun run dev:styles\"",
 		"dev:content": "vite build --watch",
 		"dev:styles": "vite build --watch --config vite.styles.config.ts",
 		"build": "vite build && vite build --config vite.styles.config.ts",
@@ -17,7 +17,7 @@
 		"stylelint": "stylelint \"src/**/*.{css,scss}\"",
 		"stylelint:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
 		"types": "tsc --noEmit",
-		"pack-local-extension": "pnpm run lint && pnpm run format:check && pnpm run stylelint && pnpm run build && pnpm run test && mkdir -p ~/chrome-extensions && rm -rf ~/chrome-extensions/npm-install-assistant && cp -R dist ~/chrome-extensions/npm-install-assistant",
+		"pack-local-extension": "bun run lint && bun run format:check && bun run stylelint && bun run build && bun run test && mkdir -p ~/chrome-extensions && rm -rf ~/chrome-extensions/npm-install-assistant && cp -R dist ~/chrome-extensions/npm-install-assistant",
 		"prepare": "husky"
 	},
 	"type": "module",
