@@ -15,10 +15,15 @@
  * ###############################################################################
  */
 
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import react from "@vitejs/plugin-react";
-import type { PreRenderedChunk } from "rollup";
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default defineConfig({
 	// ==========================================
@@ -35,6 +40,12 @@ export default defineConfig({
 	],
 
 	// ==========================================
+	// MODULE RESOLUTION
+	// ==========================================
+	// Preserve @ alias parity with editor jsconfig settings.
+	resolve: { alias: { "@": resolve(__dirname, "src") } },
+
+	// ==========================================
 	// 🏗️ BUILD STRATEGY
 	// ==========================================
 	build: {
@@ -42,22 +53,17 @@ export default defineConfig({
 		emptyOutDir: true,
 		sourcemap: true,
 		minify: true,
-		cssCodeSplit: true,
 
 		// --- Rollup Specifics ---
 		rollupOptions: {
 			input: {
-				content: "src/content/index.tsx",
+				content: resolve(__dirname, "src/content/index.tsx"),
+				styles: resolve(__dirname, "src/ui/styles.scss")
 			},
 			output: {
-				// iife is essential for isolated content scripts
-				format: "iife",
-				entryFileNames: (chunk: PreRenderedChunk) => {
-					if (chunk.name === "content") {
-						return "js/content.iife.js";
-					}
-					return "js/[name].js";
-				},
+				format: "es",
+				entryFileNames: "js/[name].js",
+				assetFileNames: "ui/[name][extname]",
 			},
 		},
 	},
