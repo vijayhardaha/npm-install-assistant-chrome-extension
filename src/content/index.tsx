@@ -1,4 +1,5 @@
 import { createRoot, type Root } from 'react-dom/client';
+
 import { SidebarApp } from './SidebarApp';
 
 let reactRoot: Root | null = null;
