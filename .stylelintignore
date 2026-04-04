@@ -2,44 +2,71 @@
 # Stylelint Ignore
 # =======================================================================
 # Purpose: Defines the files and directories that the Stylelint engine
-#          should skip to prevent linting build artifacts or external
-#          libraries.
-# Docs: https://stylelint.io/user-guide/ignore
+#          should skip to prevent linting build artifacts, external
+#          libraries, or generated CSS.
+# Docs:    https://stylelint.io/user-guide/ignore
 # =======================================================================
 
 # ----------------------------------------------------------------------
-# Dependencies & Vendor
+# Dependencies
 # ----------------------------------------------------------------------
-# We never want to lint external dependencies or third-party code
+# Packages ship CSS (Bootstrap, Tailwind, WP plugins/themes).
 node_modules/
 vendor/
 
 # ----------------------------------------------------------------------
-# Build & Output
+# Build & Compilation Output
 # ----------------------------------------------------------------------
-# Compiled code and build artifacts should be skipped
-dist/
-build/
-.out/
-coverage/
-
-# ----------------------------------------------------------------------
-# Next.js Specific
-# ----------------------------------------------------------------------
-# Next.js generates these directories automatically
+# Next.js generates CSS chunks; SvelteKit generates component CSS;
+# bundlers emit compiled stylesheets.
 .next/
+.svelte-kit/
+build/
+dist/
+out/
 
 # ----------------------------------------------------------------------
-# Static Assets & Public
+# Cache Directories
 # ----------------------------------------------------------------------
-# Binary files and static assets cannot be linted
+# Build tool caches that may contain transformed CSS.
+.cache/
+.eslintcache
+.stylelintcache
+.turbo/
+.vite/
+
+# ----------------------------------------------------------------------
+# Coverage & Reports
+# ----------------------------------------------------------------------
+# Istanbul and Playwright generate HTML reports with inline CSS.
+coverage/
+playwright-report/
+
+# ----------------------------------------------------------------------
+# Public & Static Assets
+# ----------------------------------------------------------------------
+# Committed CSS assets, vendor stylesheets, theme CSS (WordPress).
 public/
 assets/
-*.min.css
+static/
 
 # ----------------------------------------------------------------------
-# Configuration & IDE
+# Deployment Config
 # ----------------------------------------------------------------------
-# These directories contain editor-specific settings
-.vscode/
-.pnpm-store/
+# Platform config dirs — safe to skip, no CSS worth linting.
+.netlify/
+.vercel/
+.wrangler/
+
+# ----------------------------------------------------------------------
+# Temporary Files
+# ----------------------------------------------------------------------
+.tmp/
+tmp/
+
+# ----------------------------------------------------------------------
+# Minified & Generated
+# ----------------------------------------------------------------------
+# Never lint minified or pre-compiled stylesheets.
+*.min.css
+*.min.map

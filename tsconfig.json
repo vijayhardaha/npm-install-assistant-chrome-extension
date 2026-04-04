@@ -8,89 +8,13 @@
 // =======================================================================
 
 {
+  "extends": "@vijayhardaha/dev-config/tsconfig",
   "compilerOptions": {
-    // ----------------------------------------------------------------------
-    // Target & libs
-    // ----------------------------------------------------------------------
-    // Use modern ECMAScript features supported by current runtimes
-    "target": "ES2024",
-
-    // Include DOM types and iterable helpers for browser-based code
-    "lib": ["ES2024", "DOM", "DOM.Iterable"],
-
-    // Use the modern React JSX transform
-    "jsx": "react-jsx",
-
-    // ----------------------------------------------------------------------
-    // Module resolution
-    // ----------------------------------------------------------------------
-    // Use native ESM module syntax and Node-style resolution
-    "module": "Preserve",
-    "moduleDetection": "force",
-    "moduleResolution": "bundler",
-
-    // Allow importing .ts files directly for type-checking
-    "allowImportingTsExtensions": true,
-
-    // Base directory for non-relative imports used by tooling
-    "baseUrl": ".",
-
-    // Map `@/*` to `./src/*` for cleaner absolute imports
+    "baseUrl": "./",
     "paths": { "@/*": ["./src/*"] },
-
-    // Allow importing JSON files as modules
-    "resolveJsonModule": true,
-
-    // Allow default interop for CommonJS modules when consuming CJS packages
-    "esModuleInterop": true,
-
-    // ----------------------------------------------------------------------
-    // Compilation strategy
-    // ----------------------------------------------------------------------
-    // Preserve import/export syntax in output
-    "verbatimModuleSyntax": true,
-
-    // Speed up consecutive builds by enabling incremental compilation caching
-    "incremental": true,
-
-    // Do not emit JS during type-checking; Next.js handles build output
-    "noEmit": true,
-
-    // Required for tools like swc/esbuild used in Next.js
-    "isolatedModules": true,
-
-    // Allow mixed JS/TS code during gradual migration
-    "allowJs": true,
-
-    // ----------------------------------------------------------------------
-    // Type safety
-    // ----------------------------------------------------------------------
-    // Enable all strict type-checking options for safer code
-    "strict": true,
-
-    // Catch unused local variables and function parameters at compile time
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    // Ensure all code paths return a value or explicitly return nothing
-    "noImplicitReturns": true,
-
-    // Require explicit handling of switch case fallthrough
-    "noFallthroughCasesInSwitch": true,
-
-    // Use modern class field semantics for better compatibility
-    "useDefineForClassFields": true,
-
-    // Skip deep type checks inside node_modules for performance
-    "skipLibCheck": true,
-
-    // Avoid case-sensitivity issues across filesystems
-    "forceConsistentCasingInFileNames": true,
-
     // ----------------------------------------------------------------------
     // Plugins & extras
     // ----------------------------------------------------------------------
-    "plugins": [{ "name": "next" }],
     "downlevelIteration": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
@@ -110,5 +34,5 @@
   ],
 
   // ---- Excludes ----
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "coverage", "dist"]
 }

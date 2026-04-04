@@ -25,8 +25,33 @@ export default defineConfig({
     // convenience in test files.
     globals: true,
 
+    // Limit discovery to test and spec files written in TS/TSX.
+    include: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
+
     // ---- Coverage & Output ----
     // Coverage configuration: include source files, exclude test helpers
-    coverage: { include: ['src/**/*.{ts,tsx}'], exclude: ['src/test/**', '**/node_modules/**'] },
+    coverage: {
+      // Use V8 native instrumentation for fast coverage collection.
+      provider: 'v8',
+
+      // Generate terminal, machine-readable, and browsable reports.
+      reporter: ['text', 'json', 'html'],
+
+      // Write generated coverage artifacts into the project coverage folder.
+      reportsDirectory: './coverage',
+
+      // Exclude setup, generated, build, and non-target files from coverage.
+      exclude: [
+        'node_modules/',
+        'vitest.config.ts',
+        'vitest.setup.ts',
+        '**/*.test.ts',
+        '**/*.test.tsx',
+        '**/*.spec.ts',
+        '**/*.spec.tsx',
+        '**/dist/',
+        '**/build/',
+      ],
+    },
   },
 });
