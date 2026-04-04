@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 
 type PkgManager = 'npm' | 'yarn' | 'pnpm' | 'bun';
 type DependencyType = 'prod' | 'dev';
@@ -13,6 +13,36 @@ interface SidebarAppProps {
 }
 
 /**
+ * Error Boundary for the Sidebar App.
+ * Catches rendering errors and displays a safe fallback UI.
+ */
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error?: Error }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): { hasError: boolean; error?: Error } {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    console.error('SidebarApp error:', error, errorInfo);
+  }
+
+  render(): React.ReactNode {
+    if (this.state.hasError) {
+      return (
+        <section className="nia-card" aria-label="Install helper">
+          <div className="nia-error">Something went wrong. Please reload the page.</div>
+        </section>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+/**
  * Minimal registry response shape used by the sidebar.
  *
  * @property dist-tags - Dist tags including `latest`.
@@ -23,37 +53,105 @@ interface RegistryResponse {
   versions?: Record<string, unknown>;
 }
 
+/**
+ * Supported package managers.
+ */
 const PKG_MANAGERS: PkgManager[] = ['npm', 'yarn', 'pnpm', 'bun'];
+/**
+ * Default maximum number of versions to display.
+ */
 const MAX_VERSIONS = 10;
+/**
+ * localStorage key for the selected package manager.
+ */
 const PKG_MANAGER_STORAGE_KEY = 'nia_package_manager';
+/**
+ * localStorage key for showing beta versions.
+ */
 const SHOW_BETA_STORAGE_KEY = 'nia_show_beta';
+/**
+ * localStorage key for maximum versions limit.
+ */
 const MAX_VERSIONS_STORAGE_KEY = 'nia_max_versions';
 
 /**
- * Sorts semver-like strings in descending order.
+ * Parses a semver string into its components for comparison.
+ *
+ * @param {string} version - The version string to parse.
+ * @returns An object with numeric parts, pre-release identifier (or null), and build metadata (ignored).
+ */
+function parseVersion(version: string): { numeric: number[]; prerelease: string[] | null } {
+  const mainParts = version.split('-')[0].split('.');
+  const numeric = mainParts.map((p) => {
+    const n = parseInt(p, 10);
+    return Number.isNaN(n) ? 0 : n;
+  });
+
+  const prerelease: string[] | null = (() => {
+    const dashIdx = version.indexOf('-');
+    if (dashIdx === -1) return null;
+    const afterDash = version.slice(dashIdx + 1);
+    // Remove any +build metadata if present
+    const plusIdx = afterDash.indexOf('+');
+    const prereleasePart = plusIdx === -1 ? afterDash : afterDash.slice(0, plusIdx);
+    return prereleasePart.split('.').filter(Boolean);
+  })();
+
+  return { numeric, prerelease };
+}
+
+/**
+ * Sorts semver-like strings in descending order (newest first).
+ * Pre-release versions are sorted lower than release versions when numeric parts are equal.
  *
  * @param {string} a - The first version string.
  * @param {string} b - The second version string.
- * @returns A comparison value for descending sort order.
+ * @returns A negative number if a > b, positive if a < b, 0 if equal.
  */
 function compareVersionsDesc(a: string, b: string): number {
-  const parse = (version: string): number[] =>
-    version.split('.').map((part) => {
-      // Drop prerelease/build suffixes for numeric comparison.
-      const numeric = parseInt(part.split('-')[0], 10);
-      return Number.isNaN(numeric) ? 0 : numeric;
-    });
-
-  const pa = parse(a);
-  const pb = parse(b);
-  const maxLen = Math.max(pa.length, pb.length);
+  const { numeric: na, prerelease: pa } = parseVersion(a);
+  const { numeric: nb, prerelease: pb } = parseVersion(b);
+  const maxLen = Math.max(na.length, nb.length);
 
   for (let i = 0; i < maxLen; i += 1) {
-    const av = pa[i] ?? 0;
-    const bv = pb[i] ?? 0;
-    if (av > bv) return -1;
-    if (av < bv) return 1;
+    const av = na[i] ?? 0;
+    const bv = nb[i] ?? 0;
+    if (av !== bv) return bv - av; // descending numeric
   }
+
+  // Numeric parts equal; check pre-release precedence.
+  // Release (no prerelease) has higher precedence than any prerelease.
+  const aHasPre = pa !== null && pa.length > 0;
+  const bHasPre = pb !== null && pb.length > 0;
+
+  if (!aHasPre && bHasPre) return -1; // a is release, b is prerelease -> a wins
+  if (aHasPre && !bHasPre) return 1; // a is prerelease, b is release -> b wins
+  if (!aHasPre && !bHasPre) return 0; // both release -> equal
+
+  // Both have prerelease identifiers; compare lexically (dot separated).
+  const maxPreLen = Math.max(pa!.length, pb!.length);
+  for (let i = 0; i < maxPreLen; i += 1) {
+    const as = pa![i] ?? '';
+    const bs = pb![i] ?? '';
+
+    // Try numeric comparison if both are numeric
+    const an = parseInt(as, 10);
+    const bn = parseInt(bs, 10);
+    const aIsNum = !Number.isNaN(an);
+    const bIsNum = !Number.isNaN(bn);
+
+    if (aIsNum && bIsNum) {
+      if (an !== bn) return bn - an; // numeric descending
+    } else if (aIsNum) {
+      return -1; // Numeric identifiers have higher precedence than non-numeric
+    } else if (bIsNum) {
+      return 1;
+    } else {
+      // Both alphabetic, compare lexically descending (Z-a)
+      if (as !== bs) return bs.localeCompare(as);
+    }
+  }
+
   return 0;
 }
 
@@ -111,7 +209,7 @@ function buildInstallCommand(params: {
  * @param {SidebarAppProps} props - Component props.
  * @returns The rendered sidebar UI.
  */
-export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppProps) => {
+const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppProps) => {
   const [versions, setVersions] = useState<string[]>([]);
   const [filteredVersions, setFilteredVersions] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>('latest');
@@ -124,6 +222,7 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
   const [maxVersions, setMaxVersions] = useState<number>(MAX_VERSIONS);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement | null>(null);
+  const copiedTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     // Load preferred pkgManager from localStorage, and settings if present.
@@ -217,10 +316,9 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
         }
 
         allVersions.sort(compareVersionsDesc);
-        const recent = allVersions;
 
         if (!cancelled) {
-          setVersions(recent);
+          setVersions(allVersions);
           setSelectedVersion('latest');
         }
       } catch (error) {
@@ -274,7 +372,7 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
     [pkgManager, dependencyType, packageName, selectedVersion]
   );
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(command);
@@ -292,16 +390,33 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
         document.body.removeChild(textarea);
       }
 
+      // Clear any existing timeout to avoid multiple timers
+      if (copiedTimeoutRef.current) {
+        clearTimeout(copiedTimeoutRef.current);
+      }
+
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1500);
+      copiedTimeoutRef.current = window.setTimeout(() => {
+        setCopied(false);
+        copiedTimeoutRef.current = null;
+      }, 1500);
     } catch (error) {
       console.error('Failed to copy command', error);
     }
-  };
+  }, [command]);
+
+  // Cleanup timeout on unmount to prevent setState after unmount.
+  useEffect(() => {
+    return () => {
+      if (copiedTimeoutRef.current !== null) {
+        window.clearTimeout(copiedTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <section className="nia-card" aria-label="Install helper">
-      {settingsOpen && <div className="nia-settings-overlay"></div>}
+      {settingsOpen && <div className="nia-settings-overlay" aria-hidden="true"></div>}
 
       <header className="nia-header">
         <div className="nia-header-content">
@@ -329,7 +444,7 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
               </svg>
             </button>
             {settingsOpen && (
-              <div className="nia-settings-dropdown" role="menu">
+              <div className="nia-settings-dropdown" role="menu" aria-labelledby="nia-settings-button">
                 <label className="nia-field" htmlFor="nia-show-beta-checkbox">
                   <span className="nia-label">Beta versions</span>
                   <span className="nia-checkbox-toggle-container">
@@ -380,7 +495,7 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
             data-testid="pkg-manager-select"
             className="nia-select"
             value={pkgManager}
-            aria-label="Select package manager pkgManager"
+            aria-label="Select package manager"
             onChange={(e) => setPkgManager(e.target.value as PkgManager)}
           >
             {PKG_MANAGERS.map((manager) => (
@@ -463,3 +578,9 @@ export const SidebarApp: React.FC<SidebarAppProps> = ({ packageName }: SidebarAp
     </section>
   );
 };
+
+export const SidebarApp = (props: SidebarAppProps) => (
+  <ErrorBoundary>
+    <SidebarAppInner {...props} />
+  </ErrorBoundary>
+);
