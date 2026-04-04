@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "description": "Chrome extension that adds a React-powered install assistant block to npm package sidebars.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vijayhardaha/npm-install-assistant-chrome-extension.git"
+  },
+  "homepage": "https://github.com/vijayhardaha/npm-install-assistant-chrome-extension",
+  "bugs": {
+    "url": "https://github.com/vijayhardaha/npm-install-assistant-chrome-extension/issues"
+  },
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
