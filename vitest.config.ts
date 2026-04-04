@@ -18,7 +18,7 @@ export default defineConfig({
 
     // ---- Setup & Globals ----
     // Setup file executed before running tests (e.g., matchers, globals)
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ['vitest.setup.ts'],
 
     // ---- Globals ----
     // Allow global test helpers like `describe`, `it`, `expect` for
