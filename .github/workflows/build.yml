@@ -8,7 +8,6 @@ on:
       - "src/**"
       - "vite.config.ts"
       - "package.json"
-      - "bun.lockb"
       - ".github/workflows/build.yml"
     tags:
       - "v*"
