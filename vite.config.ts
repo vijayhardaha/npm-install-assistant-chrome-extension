@@ -4,7 +4,7 @@
  * ========================================================================
  * Purpose: Orchestrates the asset pipeline, React transformation, and
  *          Rollup bundling specifics for extension content scripts.
- * Docs: https://vitejs.dev/config/
+ * Docs:    https://vitejs.dev/config/
  * ========================================================================
  */
 

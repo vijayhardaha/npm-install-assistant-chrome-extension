@@ -3,7 +3,7 @@
  * Vitest Configuration
  * ========================================================================
  * Purpose: Configure Vitest for unit and integration tests (jsdom env)
- * Docs: https://vitest.dev/config/
+ * Docs:    https://vitest.dev/config/
  * ========================================================================
  */
 
