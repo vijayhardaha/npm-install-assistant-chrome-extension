@@ -3,19 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "description": "Chrome extension that adds a React-powered install assistant block to npm package sidebars.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vijayhardaha/npm-install-assistant-chrome-extension.git"
-  },
-  "homepage": "https://github.com/vijayhardaha/npm-install-assistant-chrome-extension",
-  "bugs": {
-    "url": "https://github.com/vijayhardaha/npm-install-assistant-chrome-extension/issues"
-  },
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
-    "lint": "eslint . --ext .ts,.tsx,.js,.mjs",
-    "lint:fix": "eslint . --ext .ts,.tsx,.js,.mjs --fix",
+    "lint": "eslint --ext .ts,.tsx,.js,.mjs .",
+    "lint:fix": "eslint --fix --ext .ts,.tsx,.js,.mjs .",
     "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,css,md,yml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,css,md,yml}\"",
     "stylelint": "stylelint \"src/**/*.{css,scss}\"",
@@ -28,6 +20,19 @@
     "prepare": "husky"
   },
   "type": "module",
+  "homepage": "https://github.com/vijayhardaha/npm-install-assistant-chrome-extension",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayhardaha/npm-install-assistant-chrome-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vijayhardaha/npm-install-assistant-chrome-extension/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Vijay Hardaha",
+    "url": "https://github.com/vijayhardaha"
+  },
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
@@ -43,7 +48,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.58.0",
-    "@vijayhardaha/dev-config": "^1.0.9",
+    "@vijayhardaha/dev-config": "^1.0.10",
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/coverage-v8": "^4.1.2",
     "eslint": "^9.39.4",
@@ -69,7 +74,7 @@
     "stylelint-order": "^8.1.1",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.0",
-    "vite": "^8.0.3",
+    "vite": "^8.0.5",
     "vitest": "^4.1.2"
   },
   "trustedDependencies": [

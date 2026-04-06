@@ -1,10 +1,24 @@
-# NPM Install Assistant
+# AGENTS.md
+
+> **This file serves as the authoritative reference for AI agents working on the `kabir-dohe-api` codebase.**
+
+## Project Overview
 
 Chrome extension that enhances npm package pages with an install-helper sidebar. Provides version selection, package manager choice (`npm`/`yarn`/`pnpm`), dependency type toggle, and one-click copy functionality.
 
 ## Tech Stack
 
 React 19 · TypeScript (strict, verbatimModuleSyntax) · Bun · Vite (ES output) · Sass (component partials) · Vitest + RTL + jsdom
+
+### Tech Stack
+
+- **Type**: React 19
+- **Lang**: TypeScript (strict, verbatimModuleSyntax)
+- **Bunlder**: Vite (ES output)
+- **UI**: Sass (component partials)
+- **Testing**: Vitest + RTL + jsdom
+- **Package Manager**: Bun
+-
 
 ## Project Structure
 
@@ -52,14 +66,6 @@ bun run test:coverage    # Coverage report
 - Avoid `any` (use `unknown` instead)
 - Avoid non-null assertion `!` (use `?.` or explicit checks)
 
-### Import Order
-
-External packages first (React, then others), then internal modules. Use `import type` for type-only imports.
-
-### Formatting
-
-Follow `prettier.config.mjs`. Rules: no semicolons, double quotes, trailing commas (es5), arrow function parens always.
-
 ### Required Pre-commit Checks
 
 1. Remove unused `React` imports (React 19 JSX transform)
@@ -79,22 +85,30 @@ Follow `prettier.config.mjs`. Rules: no semicolons, double quotes, trailing comm
 
 ## Git Workflow
 
-Pre-commit hooks automatically run type check, lint, and format checks.
+**Before preparing git.md (after each task):**
+
+1. Run `bun run tsc` — Type check
+2. Run `bun run format:check` — Format check
+3. Run `bun run lint` — ESLint check
 
 **After completing a task:**
 
-1. Check unstaged changes: `git status --porcelain`
+1. Check unstaged changes: `git status --porcelain` && `git diff`
 2. Stage files: `git add <files>`
 3. Create `.tmp/git.md` containing the staged files and commit command
+4. Create separate commits for each logical change
+5. Do NOT run git commands directly — only write to `.tmp/git.md`
+6. Wait for user to verify and commit
+7. Do NOT restore `.tmp/git.md` after it's cleared — clearing is intentional
 
 Example `.tmp/git.md`:
 
 ```bash
-git add src/content/index.tsx
-git commit -m "feat: add version dropdown selector
+git add src/app/api/couplets/route.ts src/lib/server/utils/response/response.ts
+git commit -m "feat: add couplets endpoint with response caching
 
-- fetch versions from npm registry
-- render dropdown with recent versions"
+- implement GET handler for fetching all couplets
+- add successCached response helper with cache headers"
 ```
 
 ## Commit Conventions
@@ -103,4 +117,4 @@ git commit -m "feat: add version dropdown selector
 
 **Types:** `feat`, `fix`, `docs`, `test`, `refactor`, `style`, `build`, `chore`
 
-**Rules:** Subject line ≤50 chars, blank line after subject, body wrapped at 72 chars, lowercase only.
+**Rules:** Subject line ≤50 chars, lowercase. Body: normal case, max 72 chars per line. Blank line after subject.
