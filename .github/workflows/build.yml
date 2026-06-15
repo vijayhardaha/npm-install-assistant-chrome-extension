@@ -35,14 +35,11 @@ jobs:
           cd dist
           zip -r ../npm-install-assistant.zip .
 
-      - name: Upload zip artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: npm-install-assistant
-          path: npm-install-assistant.zip
-
       - name: Create GitHub release
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: npm-install-assistant.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
