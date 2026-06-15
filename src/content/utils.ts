@@ -3,7 +3,7 @@
  *
  * @param {string} pathname - The current location pathname.
  *
- * @returns The package name (lowercase) or null when not on a package page.
+ * @returns {string | null} The package name (lowercase) or null when not on a package page.
  */
 export function getPackageNameFromPath(pathname: string): string | null {
   const parts = pathname.split('/').filter(Boolean);

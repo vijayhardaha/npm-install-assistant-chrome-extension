@@ -6,7 +6,7 @@ type DependencyType = 'prod' | 'dev';
 /**
  * Props for `SidebarApp`.
  *
- * @property packageName - Package name from the current npm URL.
+ * @property {string} packageName - Package name from the current npm URL.
  */
 interface SidebarAppProps {
   packageName: string;
@@ -45,8 +45,8 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 /**
  * Minimal registry response shape used by the sidebar.
  *
- * @property dist-tags - Dist tags including `latest`.
- * @property versions - Map of published versions.
+ * @property {object} distTags - Dist tags including `latest`.
+ * @property {Record<string, unknown>} versions - Map of published versions.
  */
 interface RegistryResponse {
   'dist-tags'?: { latest?: string; [key: string]: string | undefined };
@@ -79,7 +79,7 @@ const MAX_VERSIONS_STORAGE_KEY = 'nia_max_versions';
  *
  * @param {string} version - The version string to parse.
  *
- * @returns An object with numeric parts, pre-release identifier (or null), and build metadata (ignored).
+ * @returns {{ numeric: number[]; prerelease: string[] | null }} An object with numeric parts, pre-release identifier (or null), and build metadata (ignored).
  */
 function parseVersion(version: string): { numeric: number[]; prerelease: string[] | null } {
   const mainParts = version.split('-')[0].split('.');
@@ -108,7 +108,7 @@ function parseVersion(version: string): { numeric: number[]; prerelease: string[
  * @param {string} a - The first version string.
  * @param {string} b - The second version string.
  *
- * @returns A negative number if a > b, positive if a < b, 0 if equal.
+ * @returns {number} A negative number if a > b, positive if a < b, 0 if equal.
  */
 function compareVersionsDesc(a: string, b: string): number {
   const { numeric: na, prerelease: pa } = parseVersion(a);
@@ -160,13 +160,13 @@ function compareVersionsDesc(a: string, b: string): number {
 /**
  * Builds an install command for a manager and dependency type.
  *
- * @param params - Command options.
- * @param params.pkgManager - Package manager to target.
- * @param params.dependencyType - Dependency type to install.
- * @param params.packageName - Package name to install.
- * @param params.version - Version tag or exact version string.
+ * @param {object} params - Command options.
+ * @param {PkgManager} params.pkgManager - Package manager to target.
+ * @param {DependencyType} params.dependencyType - Dependency type to install.
+ * @param {string} params.packageName - Package name to install.
+ * @param {string} params.version - Version tag or exact version string.
  *
- * @returns A formatted install command string.
+ * @returns {string} A formatted install command string.
  */
 function buildInstallCommand(params: {
   pkgManager: PkgManager;
@@ -211,53 +211,57 @@ function buildInstallCommand(params: {
  *
  * @param {SidebarAppProps} props - Component props.
  *
- * @returns The rendered sidebar UI.
+ * @returns {React.ReactNode} The rendered sidebar UI.
  */
 const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppProps) => {
   const [versions, setVersions] = useState<string[]>([]);
-  const [filteredVersions, setFilteredVersions] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>('latest');
-  const [pkgManager, setPkgManager] = useState<PkgManager>('npm');
+
+  const [pkgManager, setPkgManager] = useState<PkgManager>(() => {
+    try {
+      const stored = window.localStorage.getItem(PKG_MANAGER_STORAGE_KEY);
+      if (stored !== null && PKG_MANAGERS.includes(stored as PkgManager)) {
+        return stored as PkgManager;
+      }
+    } catch {
+      // Ignore storage errors.
+    }
+    return 'npm';
+  });
+
   const [dependencyType, setDependencyType] = useState<DependencyType>('prod');
   const [copied, setCopied] = useState(false);
   const [loadingVersions, setLoadingVersions] = useState(false);
   const [versionError, setVersionError] = useState<string | null>(null);
-  const [showBeta, setShowBeta] = useState(false);
-  const [maxVersions, setMaxVersions] = useState<number>(MAX_VERSIONS);
+  const [showBeta, setShowBeta] = useState(() => {
+    try {
+      const stored = window.localStorage.getItem(SHOW_BETA_STORAGE_KEY);
+      return stored === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const [maxVersions, setMaxVersions] = useState<number>(() => {
+    try {
+      const stored = window.localStorage.getItem(MAX_VERSIONS_STORAGE_KEY);
+      if (stored) {
+        const parsed = parseInt(stored, 10);
+        if (!Number.isNaN(parsed) && parsed > 0) {
+          return parsed;
+        }
+      }
+    } catch {
+      // Ignore
+    }
+    return MAX_VERSIONS;
+  });
+
   const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement | null>(null);
   const copiedTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Load preferred pkgManager from localStorage, and settings if present.
-    try {
-      const stored = window.localStorage.getItem(PKG_MANAGER_STORAGE_KEY);
-      if (stored !== null && PKG_MANAGERS.includes(stored as PkgManager)) {
-        setPkgManager(stored as PkgManager);
-      }
-
-      // Load persisted showBeta and maxVersions settings
-      const storedShowBeta = window.localStorage.getItem(SHOW_BETA_STORAGE_KEY);
-      if (storedShowBeta === 'true') {
-        setShowBeta(true);
-      } else if (storedShowBeta === 'false') {
-        setShowBeta(false);
-      }
-
-      const storedMax = window.localStorage.getItem(MAX_VERSIONS_STORAGE_KEY);
-      if (storedMax) {
-        const parsed = parseInt(storedMax, 10);
-        if (!Number.isNaN(parsed) && parsed > 0) {
-          setMaxVersions(parsed);
-        }
-      }
-    } catch {
-      // Ignore storage errors.
-    }
-  }, []);
-
-  useEffect(() => {
-    // Persist pkgManager preference for future visits.
     try {
       window.localStorage.setItem(PKG_MANAGER_STORAGE_KEY, pkgManager);
     } catch {
@@ -280,18 +284,6 @@ const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppP
       // Ignore
     }
   }, [maxVersions]);
-
-  // Close settings dropdown when clicking outside.
-  useEffect(() => {
-    const onDocClick = (e: MouseEvent) => {
-      if (!settingsRef.current) return;
-      if (settingsRef.current.contains(e.target as Node)) return;
-      setSettingsOpen(false);
-    };
-
-    document.addEventListener('mousedown', onDocClick);
-    return () => document.removeEventListener('mousedown', onDocClick);
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -346,30 +338,27 @@ const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppP
     };
   }, [packageName]);
 
-  useEffect(() => {
-    // Clamp the limit to a positive integer.
+  const versionOptions = useMemo(() => {
     const limit = Math.max(1, Math.floor(maxVersions));
+    let filtered: string[];
     if (showBeta) {
-      setFilteredVersions(versions.slice(0, limit));
+      filtered = versions.slice(0, limit);
     } else {
-      const filtered = versions.filter((v) => !v.includes('-')).slice(0, limit);
-      setFilteredVersions(filtered);
+      filtered = versions.filter((v) => !v.includes('-')).slice(0, limit);
       if (selectedVersion !== 'latest' && !filtered.includes(selectedVersion)) {
         // Reset to latest when the selected version is filtered out.
-        setSelectedVersion('latest');
+        return ['latest'];
       }
     }
-  }, [showBeta, versions, selectedVersion, maxVersions]);
 
-  const versionOptions = useMemo(() => {
     const base: string[] = ['latest'];
-    for (const v of filteredVersions) {
+    for (const v of filtered) {
       if (!base.includes(v)) {
         base.push(v);
       }
     }
     return base;
-  }, [filteredVersions]);
+  }, [showBeta, versions, selectedVersion, maxVersions]);
 
   const command = useMemo(
     () => buildInstallCommand({ pkgManager, dependencyType, packageName, version: selectedVersion }),
@@ -584,8 +573,11 @@ const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppP
 };
 
 /**
+ * React component that renders the error boundary wrapper around the sidebar app.
  *
- * @param props
+ * @param {SidebarAppProps} props - Component props.
+ *
+ * @returns {React.ReactNode} The sidebar application with error boundary protection.
  */
 export const SidebarApp = (props: SidebarAppProps) => (
   <ErrorBoundary>

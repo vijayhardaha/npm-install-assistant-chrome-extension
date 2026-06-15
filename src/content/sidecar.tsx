@@ -10,8 +10,10 @@ let currentPackageName: string | null = null;
 /**
  * Simple debounce utility.
  *
- * @param fn
- * @param delay
+ * @param {(...args: Args) => void} fn - Function to debounce.
+ * @param {number} delay - Delay in milliseconds before executing the function.
+ *
+ * @returns {(...args: Args) => void} Debounced function.
  */
 function debounce<Args extends unknown[]>(fn: (...args: Args) => void, delay: number): (...args: Args) => void {
   let timer: ReturnType<typeof setTimeout> | null = null;
