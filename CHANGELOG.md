@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - Jun 15, 2026
+
+### Added
+
+- Settings dropdown auto-close functionality when clicking outside
+- Comprehensive pre-push hook for code quality checks
+- Comprehensive lint workflow for CI
+
+### Changed
+
+- Improved JSDoc documentation across all content scripts
+- Updated stylelint, prettier, and ESLint configurations
+- Simplified tsconfig, prettierignore, and stylelintignore configurations
+- Updated package.json with new dependencies and scripts
+- Removed deprecated CLAUDE.md file and copilot instructions symlink
+- Reorganized and expanded gitignore rules
+- Updated sidebar app tests with better event handling
+- Various style improvements to SCSS components (card, command, controls, hint, mixins)
+
+### Development
+
+- Removed deprecated ci.yml workflow
+- Updated release workflow and removed artifact upload
+- Added comprehensive code quality tooling improvements
+
+## [0.1.1] - Jun 14, 2026
+
+### Changed
+
+- Updated commitlint command in husky hook
+- Various internal improvements and cleanups
+
 ## [0.1.0] - Apr 04, 2026
 
 ### Added
