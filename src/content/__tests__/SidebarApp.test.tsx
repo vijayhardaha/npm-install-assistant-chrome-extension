@@ -15,6 +15,8 @@ type MockRegistry = { versions: Record<string, unknown> };
  * Create a mock registry response containing semantic version keys used by
  * tests. The versions map shape mirrors the npm registry `versions` object.
  *
+ * @param versions
+ *
  * @returns MockRegistry object with `versions` map for tests.
  */
 const createRegistryResponse = (versions: string[] = ['2.0.0', '1.1.0-beta.1', '1.0.0']): MockRegistry => {
@@ -28,6 +30,8 @@ const createRegistryResponse = (versions: string[] = ['2.0.0', '1.1.0-beta.1', '
 /**
  * Stub global `fetch` to return a resolved Response-like object containing
  * the mock registry JSON. This isolates network calls in tests.
+ *
+ * @param versions
  */
 const mockFetch = (versions?: string[]) => {
   const response = { ok: true, json: async () => createRegistryResponse(versions) } as Response;
