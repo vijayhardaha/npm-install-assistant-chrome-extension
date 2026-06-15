@@ -31,24 +31,32 @@ out/
 # Build tool caches that may contain transformed CSS.
 .cache/
 .eslintcache
+.gulp/
+.parcel-cache/
+.rollup.cache/
 .stylelintcache
 .turbo/
 .vite/
+.vitest/
+.webpack/
 
 # ----------------------------------------------------------------------
-# Coverage & Reports
+# Testing & Coverage
 # ----------------------------------------------------------------------
 # Istanbul and Playwright generate HTML reports with inline CSS.
+.jest/
+.nyc_output/
+blob-report/
 coverage/
 playwright-report/
+test-results/
+vitest-results/
 
 # ----------------------------------------------------------------------
-# Public & Static Assets
+# Temporary Files
 # ----------------------------------------------------------------------
-# Committed CSS assets, vendor stylesheets, theme CSS (WordPress).
-public/
-assets/
-static/
+.tmp/
+tmp/
 
 # ----------------------------------------------------------------------
 # Deployment Config
@@ -59,10 +67,55 @@ static/
 .wrangler/
 
 # ----------------------------------------------------------------------
-# Temporary Files
+# Public & Static Assets
 # ----------------------------------------------------------------------
-.tmp/
-tmp/
+# Committed CSS assets, vendor stylesheets, theme CSS (WordPress).
+assets/
+public/
+static/
+
+# ----------------------------------------------------------------------
+# Ai Coding Tools
+# ----------------------------------------------------------------------
+# AI agent caches and generated files.
+.agent
+.agents
+.aider
+.amazonq
+.antigravitycli
+.augmith
+.bolt
+.charliepython
+.claude
+.cline
+.codex
+.continue
+.copilot
+.crush
+.cursor
+.devin
+.fallow
+.freebuff
+.gemini
+.gptscript
+.jina
+.kilo
+.kilocode
+.maestro
+.manus
+.midjourney
+.mistral
+.nexus
+.opencode
+.perplexity
+.qoder
+.qwen
+.replit
+.starcode
+.supercursor
+.vibe
+.windsurf
+.xai
 
 # ----------------------------------------------------------------------
 # Minified & Generated
