@@ -2,13 +2,10 @@
  * ======================================================================
  * Stylelint Configuration
  * ======================================================================
- * Purpose: Project-wide Stylelint configuration for Next.js with SCSS
- *          support. Enforces consistent CSS/SCSS patterns and maintains
- *          code quality.
+ * Purpose: Defines linting rules for CSS/SCSS to ensure consistent
+ *          styling, ordering, and best practices across the repository.
  * Docs:    https://stylelint.io/user-guide/configure
  * ======================================================================
  */
 
-import config from '@vijayhardaha/dev-config/stylelint';
-
-export default config;
+export default { extends: ['@vijayhardaha/dev-config/stylelint'] };
