@@ -444,8 +444,7 @@ describe('SidebarApp', () => {
 
     await user.click(screen.getByTestId('settings-button'));
     const maxInput = screen.getByTestId('max-versions-input');
-    await user.clear(maxInput);
-    await user.type(maxInput, '1');
+    fireEvent.change(maxInput, { target: { value: '1' } });
 
     // After limit change, selected version should have reset to latest
     await waitFor(() => {

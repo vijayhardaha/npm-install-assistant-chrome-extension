@@ -285,6 +285,32 @@ const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppP
     }
   }, [maxVersions]);
 
+  // Close settings dropdown when clicking outside.
+  useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      if (!settingsRef.current) return;
+      if (settingsRef.current.contains(e.target as Node)) return;
+      setSettingsOpen(false);
+    };
+
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, []);
+
+  const resolvedVersion = useMemo(() => {
+    if (selectedVersion === 'latest') return 'latest';
+
+    const limit = Math.max(1, Math.floor(maxVersions));
+    let filtered: string[];
+    if (showBeta) {
+      filtered = versions.slice(0, limit);
+    } else {
+      filtered = versions.filter((v) => !v.includes('-')).slice(0, limit);
+    }
+
+    return filtered.includes(selectedVersion) ? selectedVersion : 'latest';
+  }, [selectedVersion, showBeta, versions, maxVersions]);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -345,10 +371,6 @@ const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppP
       filtered = versions.slice(0, limit);
     } else {
       filtered = versions.filter((v) => !v.includes('-')).slice(0, limit);
-      if (selectedVersion !== 'latest' && !filtered.includes(selectedVersion)) {
-        // Reset to latest when the selected version is filtered out.
-        return ['latest'];
-      }
     }
 
     const base: string[] = ['latest'];
@@ -358,11 +380,11 @@ const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppP
       }
     }
     return base;
-  }, [showBeta, versions, selectedVersion, maxVersions]);
+  }, [showBeta, versions, maxVersions]);
 
   const command = useMemo(
-    () => buildInstallCommand({ pkgManager, dependencyType, packageName, version: selectedVersion }),
-    [pkgManager, dependencyType, packageName, selectedVersion]
+    () => buildInstallCommand({ pkgManager, dependencyType, packageName, version: resolvedVersion }),
+    [pkgManager, dependencyType, packageName, resolvedVersion]
   );
 
   const handleCopy = useCallback(async () => {
@@ -520,7 +542,7 @@ const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppP
             id="nia-version-select"
             data-testid="version-select"
             className="nia-select"
-            value={selectedVersion}
+            value={resolvedVersion}
             aria-label="Select package version"
             onChange={(e) => setSelectedVersion(e.target.value)}
             disabled={loadingVersions}
