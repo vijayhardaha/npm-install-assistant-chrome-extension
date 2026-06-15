@@ -2,6 +2,7 @@
  * Extracts the npm package name from a pathname.
  *
  * @param {string} pathname - The current location pathname.
+ *
  * @returns The package name (lowercase) or null when not on a package page.
  */
 export function getPackageNameFromPath(pathname: string): string | null {
