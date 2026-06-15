@@ -10,8 +10,6 @@
 {
   "extends": "@vijayhardaha/dev-config/tsconfig",
   "compilerOptions": {
-    "baseUrl": "./",
-    "ignoreDeprecations": "6.0",
     "paths": { "@/*": ["./src/*"] },
     // ----------------------------------------------------------------------
     // Allow JS imports (no type defs for dev-config packages)
