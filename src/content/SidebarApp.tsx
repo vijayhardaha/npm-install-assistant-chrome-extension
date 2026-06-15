@@ -78,6 +78,7 @@ const MAX_VERSIONS_STORAGE_KEY = 'nia_max_versions';
  * Parses a semver string into its components for comparison.
  *
  * @param {string} version - The version string to parse.
+ *
  * @returns An object with numeric parts, pre-release identifier (or null), and build metadata (ignored).
  */
 function parseVersion(version: string): { numeric: number[]; prerelease: string[] | null } {
@@ -106,6 +107,7 @@ function parseVersion(version: string): { numeric: number[]; prerelease: string[
  *
  * @param {string} a - The first version string.
  * @param {string} b - The second version string.
+ *
  * @returns A negative number if a > b, positive if a < b, 0 if equal.
  */
 function compareVersionsDesc(a: string, b: string): number {
@@ -163,6 +165,7 @@ function compareVersionsDesc(a: string, b: string): number {
  * @param params.dependencyType - Dependency type to install.
  * @param params.packageName - Package name to install.
  * @param params.version - Version tag or exact version string.
+ *
  * @returns A formatted install command string.
  */
 function buildInstallCommand(params: {
@@ -207,6 +210,7 @@ function buildInstallCommand(params: {
  * Sidebar UI injected into npm package pages.
  *
  * @param {SidebarAppProps} props - Component props.
+ *
  * @returns The rendered sidebar UI.
  */
 const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppProps) => {
@@ -579,6 +583,10 @@ const SidebarAppInner: React.FC<SidebarAppProps> = ({ packageName }: SidebarAppP
   );
 };
 
+/**
+ *
+ * @param props
+ */
 export const SidebarApp = (props: SidebarAppProps) => (
   <ErrorBoundary>
     <SidebarAppInner {...props} />
